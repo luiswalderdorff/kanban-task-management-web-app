@@ -1,27 +1,37 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="app">
+    <side-bar />
+    <MainBoard v-if="selectedBoard" :board="selectedBoard" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import { useStore } from "vuex";
+import SideBar from "./components/SideBar.vue";
+import MainBoard from "@/components/MainBoard.vue";
 
 export default defineComponent({
   name: "App",
   components: {
-    HelloWorld,
+    MainBoard,
+    SideBar,
+  },
+  computed: {
+    selectedBoard() {
+      const store = useStore();
+      return (
+        store.state.boards.find(
+          (board: any) => board.id === store.state.selectedBoard
+        ) || store.state.boards[0]
+      );
+    },
   },
 });
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
 }
 </style>
