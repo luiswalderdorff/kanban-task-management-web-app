@@ -158,4 +158,85 @@ input[type="reset"] {
   cursor: pointer;
   outline: inherit;
 }
+
+.select-component {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  color: var(--black, #000112);
+  border-radius: 4px;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+
+  appearance: none;
+  position: relative;
+  background-image: url("./assets/icons/icon-chevron-down.svg");
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) center;
+}
+
+.subtask-checkboxes {
+  padding: 0;
+  &__task {
+    border-radius: 4px;
+    background: var(--light-bg);
+    padding: 13px;
+    margin: 0 16px 8px 0;
+    display: block;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--main-purple-hover);
+    }
+  }
+  &__checkbox {
+    appearance: none;
+    border-radius: 2px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    background: var(--white, #fff);
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    position: relative;
+    transition: background-color 0.2s;
+    margin: 0;
+
+    &:checked {
+      background-color: var(--main-purple);
+
+      & + .subtask-checkboxes__description {
+        text-decoration: line-through;
+        color: var(--medium-grey);
+      }
+    }
+  }
+
+  &__description {
+    margin-left: 16px;
+  }
+
+  &__check-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  padding: 20px;
+  z-index: 2;
+  width: 90%;
+  border-radius: 6px;
+  padding: 24px;
+  box-sizing: border-box;
+}
 </style>

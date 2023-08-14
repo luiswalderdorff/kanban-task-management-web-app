@@ -7,7 +7,7 @@
     >
       +
     </button>
-    <div v-if="newTask.columnIndex === index">
+    <div v-if="newTask.columnIndex === index" class="modal">
       <input v-model="newTask.title" placeholder="Task title" />
       <textarea
         v-model="newTask.description"

@@ -29,31 +29,49 @@
       </div>
     </div>
 
-    <div class="task-modal" v-if="selectedTask">
-      <h2 class="h2">{{ selectedTask.title }}</h2>
-      <p class="p1">{{ selectedTask.description }}</p>
-      <h3 class="h4">
+    <!-- TODO: Create component -->
+    <div class="modal task-modal" v-if="selectedTask">
+      <div class="task-modal__header">
+        <h2 class="h2 task-modal__title">{{ selectedTask.title }}</h2>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="5"
+          height="20"
+          viewBox="0 0 5 20"
+          fill="none"
+        >
+          <circle cx="2.30769" cy="2.30769" r="2.30769" fill="#828FA3" />
+          <circle cx="2.30769" cy="10.0001" r="2.30769" fill="#828FA3" />
+          <circle cx="2.30769" cy="17.6925" r="2.30769" fill="#828FA3" />
+        </svg>
+      </div>
+      <p class="p1 task-modal__description">{{ selectedTask.description }}</p>
+      <h3 class="p2 task-modal__h3">
         Subtasks ({{
           selectedTask.subtasks.filter((subtask: any) => subtask.checked).length
         }}
         of {{ selectedTask.subtasks.length }})
       </h3>
-      <ul class="subtasks">
+      <ul class="subtask-checkboxes">
+        <!-- TODO: Create Component-->
         <label
-          class="subtasks__task"
+          class="subtask-checkboxes__task"
           v-for="(subtask, index) in selectedTask.subtasks"
           :key="subtask.id"
           :for="selectedTask.id + '-' + index"
         >
           <input
-            class="subtasks__checkbox"
+            class="subtask-checkboxes__checkbox"
             type="checkbox"
             :id="selectedTask.id + '-' + index"
             v-model="subtask.checked"
           />
-          <span class="subtasks__description p2">{{ subtask.name }}</span>
+          <span class="subtask-checkboxes__description p2">{{
+            subtask.name
+          }}</span>
           <svg
-            class="subtasks__check-icon"
+            class="subtask-checkboxes__check-icon"
             width="10"
             height="8"
             xmlns="http://www.w3.org/2000/svg"
@@ -67,8 +85,8 @@
           </svg>
         </label>
       </ul>
-      <h3 class="h4">Current Status</h3>
-      <select v-model="selectedColumnId">
+      <h3 class="p2 task-modal__h3">Current Status</h3>
+      <select class="p1 select-component" v-model="selectedColumnId">
         <option
           v-for="column in board.columns"
           :value="column.id"
@@ -194,71 +212,22 @@ export default defineComponent({
 }
 
 .task-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--white);
-  padding: 20px;
-  z-index: 2;
-  width: 90%;
-  border-radius: 6px;
-  padding: 24px;
-  box-sizing: border-box;
-
-  .h2 {
-    margin: 0 0 24px;
-  }
-
-  .p1 {
-    color: var(--medium-grey);
-    margin: 24px 0 16px;
-  }
-}
-
-.subtasks {
-  padding: 0;
-  &__task {
-    border-radius: 4px;
-    background: var(--light-bg, #f4f7fd);
-    padding: 13px;
-    margin: 0 16px 8px 0;
-    display: block;
-    position: relative;
+  &__header {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
   }
-  &__checkbox {
-    appearance: none;
-    border-radius: 2px;
-    border: 1px solid rgba(130, 143, 163, 0.25);
-    background: var(--white, #fff);
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-    position: relative;
-    transition: background-color 0.2s;
+
+  &__title {
     margin: 0;
-
-    &:checked {
-      background-color: var(--main-purple);
-
-      & + .subtasks__description {
-        text-decoration: line-through;
-        color: var(--medium-grey);
-      }
-    }
   }
 
   &__description {
-    margin-left: 16px;
+    color: var(--medium-grey);
+    margin: 24px 0;
   }
 
-  &__check-icon {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
+  &__h3 {
+    color: var(--medium-grey, #828fa3);
   }
 }
 </style>

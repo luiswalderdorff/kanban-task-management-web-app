@@ -6,14 +6,6 @@
     <p class="p2 board-task__subtasks">
       0 of {{ task.subtasks.length }} subtasks
     </p>
-    <!--<p>{{ task.description }}</p>
-    
-    <ul>
-      <li v-for="subtask in task.subtasks" :key="subtask.id">
-        {{ subtask.name }}
-      </li>
-    </ul>
-    -->
   </div>
 </template>
 
