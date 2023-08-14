@@ -33,17 +33,7 @@
           {{ selectedTask.title }}
         </h2>
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="5"
-          height="20"
-          viewBox="0 0 5 20"
-          fill="none"
-        >
-          <circle cx="2.30769" cy="2.30769" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="10.0001" r="2.30769" fill="#828FA3" />
-          <circle cx="2.30769" cy="17.6925" r="2.30769" fill="#828FA3" />
-        </svg>
+        <options-component type="Task" />
       </div>
 
       <div class="modal__section">
@@ -87,6 +77,7 @@ import draggable from "vuedraggable";
 import BoardTask from "./BoardTask.vue";
 import ModalComponent from "./subcomponents/ModalComponent.vue";
 import CheckboxComponent from "./subcomponents/CheckboxComponent.vue";
+import OptionsComponent from "./subcomponents/OptionsComponent.vue";
 
 export default defineComponent({
   props: ["board"],
@@ -103,7 +94,13 @@ export default defineComponent({
       drag: false,
     };
   },
-  components: { BoardTask, ModalComponent, CheckboxComponent, draggable },
+  components: {
+    BoardTask,
+    ModalComponent,
+    CheckboxComponent,
+    draggable,
+    OptionsComponent,
+  },
   methods: {
     showTask(task: any, columnId: string) {
       this.selectedTask = { ...task };
