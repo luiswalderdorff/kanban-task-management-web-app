@@ -15,14 +15,20 @@
             >({{ column.tasks.length }})</template
           >
         </h2>
-        <BoardTask
-          v-for="task in column.tasks"
-          :key="task.id"
-          :task="task"
-          @click="showTask(task, column.id)"
-        />
+        <draggable
+          v-model="column.tasks"
+          group="people"
+          @start="drag = true"
+          @end="drag = false"
+          item-key="id"
+        >
+          <template #item="{ element }">
+            <BoardTask :task="element" @click="showTask(element, column.id)" />
+          </template>
+        </draggable>
       </div>
     </div>
+
     <div class="task-modal" v-if="selectedTask">
       <h2 class="h2">{{ selectedTask.title }}</h2>
       <p class="p1">{{ selectedTask.description }}</p>
@@ -86,6 +92,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
+import draggable from "vuedraggable";
 import BoardTask from "./BoardTask.vue";
 
 export default defineComponent({
@@ -100,9 +107,10 @@ export default defineComponent({
       },
       selectedTask: null as any,
       selectedColumnId: null as any,
+      drag: false,
     };
   },
-  components: { BoardTask },
+  components: { BoardTask, draggable },
   computed: {
     sideMenuOpen() {
       const store = useStore();
