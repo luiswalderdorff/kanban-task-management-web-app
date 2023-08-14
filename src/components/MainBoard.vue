@@ -53,45 +53,7 @@
       </div>
 
       <div class="modal__section">
-        <h3 class="modal-subheading">
-          Subtasks ({{
-            selectedTask.subtasks.filter((subtask: any) => subtask.checked)
-              .length
-          }}
-          of {{ selectedTask.subtasks.length }})
-        </h3>
-        <ul class="checkboxes-component">
-          <!-- TODO: Create Component-->
-          <label
-            class="checkboxes-component__task"
-            v-for="(subtask, index) in selectedTask.subtasks"
-            :key="subtask.id"
-            :for="selectedTask.id + '-' + index"
-          >
-            <input
-              class="checkboxes-component__checkbox"
-              type="checkbox"
-              :id="selectedTask.id + '-' + index"
-              v-model="subtask.checked"
-            />
-            <span class="checkboxes-component__description body-medium">{{
-              subtask.name
-            }}</span>
-            <svg
-              class="checkboxes-component__check-icon"
-              width="10"
-              height="8"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke="#FFF"
-                stroke-width="2"
-                fill="none"
-                d="m1.276 3.066 2.756 2.756 5-5"
-              />
-            </svg>
-          </label>
-        </ul>
+        <CheckboxComponent v-bind="{ board, selectedTask, selectedColumnId }" />
       </div>
 
       <div class="modal__section">
@@ -121,10 +83,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
 import draggable from "vuedraggable";
 import BoardTask from "./BoardTask.vue";
 import ModalComponent from "./subcomponents/ModalComponent.vue";
+import CheckboxComponent from "./subcomponents/CheckboxComponent.vue";
 
 export default defineComponent({
   props: ["board"],
@@ -141,7 +103,7 @@ export default defineComponent({
       drag: false,
     };
   },
-  components: { BoardTask, ModalComponent, draggable },
+  components: { BoardTask, ModalComponent, CheckboxComponent, draggable },
   methods: {
     showTask(task: any, columnId: string) {
       this.selectedTask = { ...task };
@@ -175,6 +137,12 @@ export default defineComponent({
       ) {
         this.moveTaskToColumn(oldColumnId, newColumnId);
       }
+    },
+    board: {
+      deep: true,
+      handler() {
+        console.log(123);
+      },
     },
   },
 });

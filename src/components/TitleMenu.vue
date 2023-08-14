@@ -31,10 +31,10 @@
       <div
         class="title-menu__open-side-menu"
         @click="toggleSideMenu"
-        v-if="selectedBoard"
+        v-if="board"
       >
         <h2 class="heading-large title-menu__title">
-          {{ selectedBoard.name }}
+          {{ board.name }}
         </h2>
         <svg
           class="title-menu__open-icon"
@@ -50,8 +50,8 @@
       </div>
     </div>
     <div class="title-menu__options">
-      <NewTask :board="selectedBoard" />
-      <EditBoard :board="selectedBoard" />
+      <NewTask :board="board" />
+      <EditBoard :board="board" />
     </div>
   </div>
 </template>
@@ -69,11 +69,8 @@ export default defineComponent({
       menuOpen: false,
     };
   },
+  props: ["board"],
   computed: {
-    selectedBoard(): any {
-      const store = useStore();
-      return store.state.selectedBoard;
-    },
     sideMenuOpen(): boolean {
       const store = useStore();
       return store.state.sideMenuOpen;

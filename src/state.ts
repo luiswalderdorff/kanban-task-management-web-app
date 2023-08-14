@@ -19,12 +19,15 @@ export default createStore({
                 subtasks: [
                   {
                     name: "Task1",
+                    checked: false,
                   },
                   {
                     name: "Task 2",
+                    checked: false,
                   },
                   {
                     name: "Task 3",
+                    checked: false,
                   },
                 ],
                 id: "1691875119720",
@@ -258,7 +261,7 @@ export default createStore({
       },
     ] as any[],
     // TODO: Add first board naturally
-    selectedBoard: null,
+    selectedBoardId: null,
     newTask: {
       id: "",
       title: "",
@@ -272,7 +275,6 @@ export default createStore({
     addBoard({ commit }, board) {
       const id = Date.now();
       commit("ADD_BOARD", { id, ...board });
-      console.log(board);
     },
     selectBoard({ commit }, board) {
       commit("SELECT_BOARD", board.id);
@@ -288,27 +290,28 @@ export default createStore({
         column.tasks.push(newTask);
         commit("ADD_TASK", newTask);
       }
-      console.log(board);
     },
     toggleSideMenu() {
       this.commit("TOGGLE_SIDE_MENU");
     },
     initializeSelectedBoard({ commit, state }) {
-      const selectedBoard = state.boards.length > 0 ? state.boards[0] : null;
-      console.log(selectedBoard);
-
-      commit("SET_SELECTED_BOARD", selectedBoard);
+      const selectedBoardId =
+        state.boards.length > 0 ? state.boards[0].id : null;
+      commit("SET_SELECTED_BOARD_ID", selectedBoardId);
+    },
+    updateSubtask({ commit }, payload) {
+      commit("UPDATE_SUBTASK", payload);
     },
   },
   mutations: {
     ADD_BOARD(state, board) {
       state.boards.push(board);
-      if (!state.selectedBoard) {
-        state.selectedBoard = board.id;
+      if (!state.selectedBoardId) {
+        state.selectedBoardId = board.id;
       }
     },
     SELECT_BOARD(state, boardId) {
-      state.selectedBoard = boardId;
+      state.selectedBoardId = boardId;
     },
     ADD_TASK(state, task) {
       const column = state.boards
@@ -319,8 +322,20 @@ export default createStore({
     TOGGLE_SIDE_MENU(state) {
       state.sideMenuOpen = !state.sideMenuOpen;
     },
-    SET_SELECTED_BOARD(state, boardId) {
-      state.selectedBoard = boardId;
+    SET_SELECTED_BOARD_ID(state, boardId) {
+      state.selectedBoardId = boardId;
+    },
+    UPDATE_SUBTASK(
+      state,
+      { boardId, columnId, taskId, subtaskIndex, checked }
+    ) {
+      const board = state.boards.find((board) => board.id === boardId);
+      const column = board.columns.find(
+        (column: any) => column.id === columnId
+      );
+      const task = column.tasks.find((task: any) => task.id === taskId);
+      const subtask = task.subtasks[subtaskIndex];
+      subtask.checked = checked;
     },
   },
 });

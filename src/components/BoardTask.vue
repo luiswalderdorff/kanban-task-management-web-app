@@ -4,7 +4,8 @@
     <h3 class="heading-medium board-task__title">{{ task.title }}</h3>
     <!-- TODO: calculate finished subtasks and test with 0 subtasks -->
     <p class="body-medium board-task__subtasks">
-      0 of {{ task.subtasks.length }} subtasks
+      {{ task.subtasks.filter((subtask: any) => subtask.checked).length }} of
+      {{ task.subtasks.length }} subtasks
     </p>
   </div>
 </template>

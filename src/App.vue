@@ -4,7 +4,7 @@
     :class="{ 'grid-container--darkened': isDarkened }"
   >
     <SideMenu v-if="sideMenuOpen" />
-    <TitleMenu />
+    <TitleMenu :board="selectedBoard" />
     <MainBoard v-if="selectedBoard" :board="selectedBoard" />
   </div>
 </template>
@@ -24,19 +24,25 @@ export default defineComponent({
     MainBoard,
     TitleMenu,
   },
+  setup() {
+    const store = useStore();
+
+    return {
+      store,
+    };
+  },
   data() {
     return {
       isDarkened: false,
+      selectedBoard: null as any,
     };
   },
   computed: {
-    selectedBoard(): any {
-      const store = useStore();
-      return store.state.selectedBoard;
-    },
     sideMenuOpen(): boolean {
-      const store = useStore();
-      return store.state.sideMenuOpen;
+      return this.store.state.sideMenuOpen;
+    },
+    boards(): any {
+      return this.store.state.boards;
     },
   },
   created() {
@@ -47,6 +53,7 @@ export default defineComponent({
     EventBus.on("modal-close", () => {
       this.isDarkened = false;
     });
+    this.getBoardData();
   },
   beforeUnmount() {
     EventBus.off("modal-open");
@@ -54,6 +61,20 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(["initializeSelectedBoard"]),
+    getBoardData() {
+      this.selectedBoard = this.store.state.boards.find(
+        (board: any) => board.id === this.store.state.selectedBoardId
+      );
+      console.log(this.selectedBoard);
+    },
+  },
+  watch: {
+    boards: {
+      deep: true,
+      handler() {
+        this.getBoardData();
+      },
+    },
   },
 });
 </script>
@@ -213,57 +234,6 @@ input[type="reset"] {
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: calc(100% - 14px) center;
-}
-
-.checkboxes-component {
-  padding: 0;
-  &__task {
-    border-radius: 4px;
-    background: var(--light-bg);
-    padding: 13px;
-    margin: 0 16px 8px 0;
-    display: block;
-    position: relative;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s;
-
-    &:hover {
-      background: var(--main-purple-hover);
-    }
-  }
-  &__checkbox {
-    appearance: none;
-    border-radius: 2px;
-    border: 1px solid rgba(130, 143, 163, 0.25);
-    background: var(--white, #fff);
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-    position: relative;
-    transition: background-color 0.2s;
-    margin: 0;
-
-    &:checked {
-      background-color: var(--main-purple);
-
-      & + .checkboxes-component__description {
-        text-decoration: line-through;
-        color: var(--medium-grey);
-      }
-    }
-  }
-
-  &__description {
-    margin-left: 16px;
-  }
-
-  &__check-icon {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-  }
 }
 
 .input-component {
