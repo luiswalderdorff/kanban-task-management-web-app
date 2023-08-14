@@ -1,5 +1,8 @@
 <template>
-  <div class="grid-container">
+  <div
+    class="grid-container"
+    :class="{ 'grid-container--darkened': isDarkened }"
+  >
     <SideMenu v-if="sideMenuOpen" />
     <TitleMenu />
     <MainBoard v-if="selectedBoard" :board="selectedBoard" />
@@ -12,6 +15,7 @@ import SideMenu from "./components/SideMenu.vue";
 import MainBoard from "./components/MainBoard.vue";
 import TitleMenu from "./components/TitleMenu.vue";
 import { useStore, mapActions } from "vuex";
+import { EventBus } from "./components/subcomponents/EventBus";
 
 export default defineComponent({
   name: "App",
@@ -19,6 +23,11 @@ export default defineComponent({
     SideMenu,
     MainBoard,
     TitleMenu,
+  },
+  data() {
+    return {
+      isDarkened: false,
+    };
   },
   computed: {
     selectedBoard(): any {
@@ -32,6 +41,16 @@ export default defineComponent({
   },
   created() {
     this.initializeSelectedBoard();
+    EventBus.on("modal-open", () => {
+      this.isDarkened = true;
+    });
+    EventBus.on("modal-close", () => {
+      this.isDarkened = false;
+    });
+  },
+  beforeUnmount() {
+    EventBus.off("modal-open");
+    EventBus.off("modal-close");
   },
   methods: {
     ...mapActions(["initializeSelectedBoard"]),
@@ -77,36 +96,40 @@ body {
   margin: 0;
 }
 
-.h1 {
+.heading-xl {
   font-size: 24px;
   font-weight: 700;
+  margin-top: 0;
 }
 
-.h2 {
+.heading-large {
   font-size: 18px;
   font-weight: 700;
+  margin-top: 0;
 }
 
-.h3 {
+.heading-medium {
   font-size: 15px;
   font-weight: 700;
+  margin-top: 0;
 }
 
-.h4 {
+.heading-small {
   color: var(--medium-grey, #828fa3);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2.4px;
+  margin-top: 0;
 }
 
-.p1 {
+.body-large {
   color: var(--dark-grey, #2b2c37);
   font-size: 13px;
   font-weight: 500;
   line-height: 23px;
 }
 
-.p2 {
+.body-medium {
   color: var(--dark-grey, #2b2c37);
   font-size: 12px;
   font-weight: 700;
@@ -121,6 +144,23 @@ body {
     "main-board";
   grid-template-rows: auto 1fr;
   min-height: 100vh;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    pointer-events: none;
+  }
+  &--darkened::after {
+    opacity: 1;
+    pointer-events: all;
+  }
   @media only screen and (min-width: 768px) {
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -175,7 +215,7 @@ input[type="reset"] {
   background-position: calc(100% - 14px) center;
 }
 
-.subtask-checkboxes {
+.checkboxes-component {
   padding: 0;
   &__task {
     border-radius: 4px;
@@ -207,7 +247,7 @@ input[type="reset"] {
     &:checked {
       background-color: var(--main-purple);
 
-      & + .subtask-checkboxes__description {
+      & + .checkboxes-component__description {
         text-decoration: line-through;
         color: var(--medium-grey);
       }
@@ -226,17 +266,89 @@ input[type="reset"] {
   }
 }
 
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--white);
-  padding: 20px;
-  z-index: 2;
-  width: 90%;
-  border-radius: 6px;
-  padding: 24px;
+.input-component {
+  @extend .body-large;
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  background: var(--white, #fff);
+  padding: 8px 16px;
+  color: var(--black);
   box-sizing: border-box;
+  margin-bottom: 12px;
+
+  &::placeholder {
+    color: var(--black);
+    opacity: 0.25;
+  }
+
+  &:focus {
+    outline: none !important;
+    border: 2px solid var(--main-purple-hover);
+  }
+}
+
+.modal-subheading {
+  @extend .body-medium;
+  color: var(--medium-grey);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.list-editable {
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  &__input {
+    @extend .input-component;
+    width: auto;
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
+
+  &__remove {
+    margin-left: 16px;
+    height: 15px;
+    width: 15px;
+  }
+}
+
+.button {
+  @extend .body-large;
+  border-radius: 20px;
+  width: 100%;
+  font-weight: bold;
+  padding: 9px 0;
+  transition: background 0.2s;
+  color: var(--white);
+  background: var(--main-purple);
+
+  &:hover {
+    background: var(--main-purple-hover);
+  }
+
+  &--large {
+    @extend .heading-medium;
+    padding: 15px 0;
+  }
+  &--secondary {
+    background: rgba(99, 95, 199, 0.1);
+    color: var(--main-purple);
+
+    &:hover {
+      background: rgba(99, 95, 199, 0.25);
+    }
+  }
+
+  &--destructive {
+    background: var(--red);
+
+    &:hover {
+      background: var(--red-hover);
+    }
+  }
 }
 </style>

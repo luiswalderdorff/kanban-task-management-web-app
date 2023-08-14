@@ -17,7 +17,7 @@
       </svg>
     </div>
     <div class="side-menu__all-boards">
-      <h2 class="h4 side-menu__all-boards-title">
+      <h2 class="heading-small side-menu__all-boards-title">
         All Boards
         <template v-if="boards.length">({{ boards.length }})</template>
       </h2>
@@ -194,6 +194,7 @@ export default {
   color: var(--medium-grey);
   width: 240px;
   text-align: left;
+  font-weight: bold;
   &__icon {
     margin-right: 12px;
     path {

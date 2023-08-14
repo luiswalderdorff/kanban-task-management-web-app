@@ -33,7 +33,9 @@
         @click="toggleSideMenu"
         v-if="selectedBoard"
       >
-        <h2 class="h2 title-menu__title">{{ selectedBoard.name }}</h2>
+        <h2 class="heading-large title-menu__title">
+          {{ selectedBoard.name }}
+        </h2>
         <svg
           class="title-menu__open-icon"
           :class="{ 'title-menu__open-icon--opened': sideMenuOpen }"

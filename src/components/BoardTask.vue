@@ -1,9 +1,9 @@
 <template>
   <div class="board-task">
     <!-- TODO: Add colors -->
-    <h3 class="h3 board-task__title">{{ task.title }}</h3>
+    <h3 class="heading-medium board-task__title">{{ task.title }}</h3>
     <!-- TODO: calculate finished subtasks and test with 0 subtasks -->
-    <p class="p2 board-task__subtasks">
+    <p class="body-medium board-task__subtasks">
       0 of {{ task.subtasks.length }} subtasks
     </p>
   </div>

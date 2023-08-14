@@ -1,0 +1,48 @@
+<template>
+  <div class="modal" v-if="content">
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+import { EventBus } from "./EventBus";
+
+export default defineComponent({
+  props: ["content"],
+  watch: {
+    content(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        EventBus.emit("modal-open");
+      } else if (!newVal && oldVal) {
+        EventBus.emit("modal-close");
+      }
+    },
+  },
+  methods: {
+    closeModal() {
+      EventBus.emit("modal-close");
+    },
+  },
+});
+</script>
+
+<style lang="scss">
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  padding: 20px;
+  z-index: 2;
+  width: 90%;
+  border-radius: 6px;
+  padding: 24px;
+  box-sizing: border-box;
+
+  &__section {
+    margin-bottom: 24px;
+  }
+}
+</style>

@@ -1,15 +1,12 @@
 <template>
-  <div
-    class="main-board"
-    :class="{ 'main-board--darkened': sideMenuOpen || selectedTask }"
-  >
+  <div class="main-board">
     <div class="main-board__columns" v-if="board">
       <div
         class="main-board__column"
         v-for="(column, index) in board.columns"
         :key="index"
       >
-        <h2 class="h4 main-board__title">
+        <h2 class="heading-small main-board__title">
           {{ column.name }}
           <template v-if="column.tasks.length"
             >({{ column.tasks.length }})</template
@@ -30,9 +27,11 @@
     </div>
 
     <!-- TODO: Create component -->
-    <div class="modal task-modal" v-if="selectedTask">
+    <ModalComponent class="task-modal" :content="selectedTask">
       <div class="task-modal__header">
-        <h2 class="h2 task-modal__title">{{ selectedTask.title }}</h2>
+        <h2 class="heading-large task-modal__title">
+          {{ selectedTask.title }}
+        </h2>
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -46,55 +45,68 @@
           <circle cx="2.30769" cy="17.6925" r="2.30769" fill="#828FA3" />
         </svg>
       </div>
-      <p class="p1 task-modal__description">{{ selectedTask.description }}</p>
-      <h3 class="p2 task-modal__h3">
-        Subtasks ({{
-          selectedTask.subtasks.filter((subtask: any) => subtask.checked).length
-        }}
-        of {{ selectedTask.subtasks.length }})
-      </h3>
-      <ul class="subtask-checkboxes">
-        <!-- TODO: Create Component-->
-        <label
-          class="subtask-checkboxes__task"
-          v-for="(subtask, index) in selectedTask.subtasks"
-          :key="subtask.id"
-          :for="selectedTask.id + '-' + index"
-        >
-          <input
-            class="subtask-checkboxes__checkbox"
-            type="checkbox"
-            :id="selectedTask.id + '-' + index"
-            v-model="subtask.checked"
-          />
-          <span class="subtask-checkboxes__description p2">{{
-            subtask.name
-          }}</span>
-          <svg
-            class="subtask-checkboxes__check-icon"
-            width="10"
-            height="8"
-            xmlns="http://www.w3.org/2000/svg"
+
+      <div class="modal__section">
+        <p class="body-large task-modal__description">
+          {{ selectedTask.description }}
+        </p>
+      </div>
+
+      <div class="modal__section">
+        <h3 class="modal-subheading">
+          Subtasks ({{
+            selectedTask.subtasks.filter((subtask: any) => subtask.checked)
+              .length
+          }}
+          of {{ selectedTask.subtasks.length }})
+        </h3>
+        <ul class="checkboxes-component">
+          <!-- TODO: Create Component-->
+          <label
+            class="checkboxes-component__task"
+            v-for="(subtask, index) in selectedTask.subtasks"
+            :key="subtask.id"
+            :for="selectedTask.id + '-' + index"
           >
-            <path
-              stroke="#FFF"
-              stroke-width="2"
-              fill="none"
-              d="m1.276 3.066 2.756 2.756 5-5"
+            <input
+              class="checkboxes-component__checkbox"
+              type="checkbox"
+              :id="selectedTask.id + '-' + index"
+              v-model="subtask.checked"
             />
-          </svg>
-        </label>
-      </ul>
-      <h3 class="p2 task-modal__h3">Current Status</h3>
-      <select class="p1 select-component" v-model="selectedColumnId">
-        <option
-          v-for="column in board.columns"
-          :value="column.id"
-          :key="column.id"
-        >
-          {{ column.name }}
-        </option>
-      </select>
+            <span class="checkboxes-component__description body-medium">{{
+              subtask.name
+            }}</span>
+            <svg
+              class="checkboxes-component__check-icon"
+              width="10"
+              height="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke="#FFF"
+                stroke-width="2"
+                fill="none"
+                d="m1.276 3.066 2.756 2.756 5-5"
+              />
+            </svg>
+          </label>
+        </ul>
+      </div>
+
+      <div class="modal__section">
+        <h3 class="modal-subheading">Current Status</h3>
+        <select class="body-large select-component" v-model="selectedColumnId">
+          <option
+            v-for="column in board.columns"
+            :value="column.id"
+            :key="column.id"
+          >
+            {{ column.name }}
+          </option>
+        </select>
+      </div>
+
       <button
         @click="
           selectedTask = null;
@@ -103,7 +115,7 @@
       >
         Close
       </button>
-    </div>
+    </ModalComponent>
   </div>
 </template>
 
@@ -112,6 +124,7 @@ import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import draggable from "vuedraggable";
 import BoardTask from "./BoardTask.vue";
+import ModalComponent from "./subcomponents/ModalComponent.vue";
 
 export default defineComponent({
   props: ["board"],
@@ -128,13 +141,7 @@ export default defineComponent({
       drag: false,
     };
   },
-  components: { BoardTask, draggable },
-  computed: {
-    sideMenuOpen() {
-      const store = useStore();
-      return store.state.sideMenuOpen;
-    },
-  },
+  components: { BoardTask, ModalComponent, draggable },
   methods: {
     showTask(task: any, columnId: string) {
       this.selectedTask = { ...task };
@@ -178,21 +185,6 @@ export default defineComponent({
   background-color: var(--light-bg);
   position: relative;
   overflow: scroll;
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-    pointer-events: none;
-  }
-  &--darkened::after {
-    opacity: 1;
-  }
 
   &__columns {
     display: flex;
@@ -224,10 +216,6 @@ export default defineComponent({
   &__description {
     color: var(--medium-grey);
     margin: 24px 0;
-  }
-
-  &__h3 {
-    color: var(--medium-grey, #828fa3);
   }
 }
 </style>
