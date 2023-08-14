@@ -304,8 +304,9 @@ export default createStore({
         state.boards.length > 0 ? state.boards[0].id : null;
       commit("SET_SELECTED_BOARD_ID", selectedBoardId);
     },
+    // TODO: Objekt at the moment is referenced directly and changed. In the future, create deep copy, change it manually through mutations
     updateSubtask({ commit }, payload) {
-      commit("UPDATE_SUBTASK", payload);
+      //commit("UPDATE_SUBTASK", payload);
     },
   },
   mutations: {
@@ -334,13 +335,22 @@ export default createStore({
       state,
       { boardId, columnId, taskId, subtaskIndex, checked }
     ) {
-      const board = state.boards.find((board: any) => board.id === boardId);
+      console.log(state);
+
+      /*const board = state.boards.find((board: any) => board.id === boardId);
       const column = board.columns.find(
         (column: any) => column.id === columnId
       );
       const task = column.tasks.find((task: any) => task.id === taskId);
       const subtask = task.subtasks[subtaskIndex];
-      subtask.checked = checked;
+      subtask.checked = checked;*/
+    },
+    MOVE_TASK(state, event) {
+      console.log(state);
+
+      // Update the state based on the event
+      // You can access the old and new indices of the moved task from event.oldIndex and event.newIndex
+      // You can access the old and new column from event.from and event.to
     },
   },
   // TODO: What does this do?

@@ -75,6 +75,13 @@ export default defineComponent({
         this.getBoardData();
       },
     },
+    // TODO: Remove later when all changes happen through mutations
+    "$store.state": {
+      handler(newValue) {
+        localStorage.setItem("state", JSON.stringify(newValue));
+      },
+      deep: true,
+    },
   },
 });
 </script>
