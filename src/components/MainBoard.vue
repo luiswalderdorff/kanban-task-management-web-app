@@ -30,43 +30,51 @@
     <ModalComponent class="task-modal" :content="selectedTask">
       <div class="task-modal__header">
         <h2 class="heading-large task-modal__title">
-          {{ selectedTask.title }}
+          <template v-if="!editTask">{{ selectedTask.title }}</template>
+          <template v-else>Edit Task</template>
         </h2>
 
-        <options-component type="Task" />
+        <options-component type="Task" @edit-event="editTask = true" />
       </div>
+      <template v-if="!editTask">
+        <div class="modal__section">
+          <p class="body-large task-modal__description">
+            {{ selectedTask.description }}
+          </p>
+        </div>
 
-      <div class="modal__section">
-        <p class="body-large task-modal__description">
-          {{ selectedTask.description }}
-        </p>
-      </div>
+        <div class="modal__section">
+          <CheckboxComponent v-bind="{ board, selectedTask }" />
+        </div>
 
-      <div class="modal__section">
-        <CheckboxComponent v-bind="{ board, selectedTask, selectedColumnId }" />
-      </div>
-
-      <div class="modal__section">
-        <h3 class="modal-subheading">Current Status</h3>
-        <select class="body-large select-component" v-model="selectedColumnId">
-          <option
-            v-for="column in board.columns"
-            :value="column.id"
-            :key="column.id"
+        <div class="modal__section">
+          <h3 class="modal-subheading">Current Status</h3>
+          <select
+            class="body-large select-component"
+            v-model="selectedTask.columnId"
           >
-            {{ column.name }}
-          </option>
-        </select>
-      </div>
+            <option
+              v-for="column in board.columns"
+              :value="column.id"
+              :key="column.id"
+            >
+              {{ column.name }}
+            </option>
+          </select>
+        </div>
 
-      <button
-        @click="
-          selectedTask = null;
-          selectedColumnId = null;
-        "
-      >
-        Close
-      </button>
+        <button
+          @click="
+            selectedTask = null;
+            editTask = false;
+          "
+        >
+          Close
+        </button>
+      </template>
+      <template v-else>
+        <task-form :task="selectedTask" :board="board" />
+      </template>
     </ModalComponent>
   </div>
 </template>
@@ -78,6 +86,7 @@ import BoardTask from "./BoardTask.vue";
 import ModalComponent from "./subcomponents/ModalComponent.vue";
 import CheckboxComponent from "./subcomponents/CheckboxComponent.vue";
 import OptionsComponent from "./subcomponents/OptionsComponent.vue";
+import TaskForm from "./subcomponents/TaskForm.vue";
 
 export default defineComponent({
   props: ["board"],
@@ -90,7 +99,7 @@ export default defineComponent({
         columnIndex: null,
       },
       selectedTask: null as any,
-      selectedColumnId: null as any,
+      editTask: false,
       drag: false,
     };
   },
@@ -100,11 +109,11 @@ export default defineComponent({
     CheckboxComponent,
     draggable,
     OptionsComponent,
+    TaskForm,
   },
   methods: {
     showTask(task: any, columnId: string) {
-      this.selectedTask = { ...task };
-      this.selectedColumnId = columnId;
+      this.selectedTask = { ...task, columnId: columnId };
     },
     moveTaskToColumn(oldColumnId: string, newColumnId: string) {
       const oldColumn = this.board.columns.find(
@@ -125,7 +134,7 @@ export default defineComponent({
     },
   },
   watch: {
-    selectedColumnId: function (newColumnId, oldColumnId) {
+    "selectedTask.columnId": function (newColumnId, oldColumnId) {
       if (
         newColumnId !== oldColumnId &&
         oldColumnId !== null &&
@@ -172,6 +181,7 @@ export default defineComponent({
   &__header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 24px;
   }
 
   &__title {

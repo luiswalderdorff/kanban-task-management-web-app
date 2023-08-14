@@ -40,6 +40,8 @@ export default defineComponent({
   border-radius: 6px;
   padding: 24px;
   box-sizing: border-box;
+  max-height: 90vh;
+  overflow: scroll;
 
   &__section {
     margin-bottom: 24px;

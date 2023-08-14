@@ -1,47 +1,49 @@
 <template>
-  <h3 class="modal-subheading">
-    Subtasks ({{ subtasksChecked }} of {{ selectedTask.subtasks.length }})
-  </h3>
-  <ul class="checkboxes-component">
-    <label
-      class="checkboxes-component__task"
-      v-for="(subtask, index) in selectedTask.subtasks"
-      :key="subtask.id"
-      :for="selectedTask.id + '-' + index"
-    >
-      <input
-        class="checkboxes-component__checkbox"
-        type="checkbox"
-        :id="selectedTask.id + '-' + index"
-        :checked="subtask.checked"
-        v-model="subtask.checked"
-        @change="updateSubtaskChecked(index, $event.target.checked)"
-      />
-      <span class="checkboxes-component__description body-medium">{{
-        subtask.name
-      }}</span>
-      <svg
-        class="checkboxes-component__check-icon"
-        width="10"
-        height="8"
-        xmlns="http://www.w3.org/2000/svg"
+  <div>
+    <h3 class="modal-subheading">
+      Subtasks ({{ subtasksChecked }} of {{ selectedTask.subtasks.length }})
+    </h3>
+    <ul class="checkboxes-component">
+      <label
+        class="checkboxes-component__task"
+        v-for="(subtask, index) in selectedTask.subtasks"
+        :key="subtask.id"
+        :for="selectedTask.id + '-' + index"
       >
-        <path
-          stroke="#FFF"
-          stroke-width="2"
-          fill="none"
-          d="m1.276 3.066 2.756 2.756 5-5"
+        <input
+          class="checkboxes-component__checkbox"
+          type="checkbox"
+          :id="selectedTask.id + '-' + index"
+          :checked="subtask.checked"
+          v-model="subtask.checked"
+          @change="updateSubtaskChecked(index, $event.target.checked)"
         />
-      </svg>
-    </label>
-  </ul>
+        <span class="checkboxes-component__description body-medium">{{
+          subtask.name
+        }}</span>
+        <svg
+          class="checkboxes-component__check-icon"
+          width="10"
+          height="8"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke="#FFF"
+            stroke-width="2"
+            fill="none"
+            d="m1.276 3.066 2.756 2.756 5-5"
+          />
+        </svg>
+      </label>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["board", "selectedTask", "selectedColumnId"],
+  props: ["board", "selectedTask"],
   computed: {
     subtasksChecked() {
       return this.selectedTask.subtasks.filter(
@@ -54,7 +56,7 @@ export default defineComponent({
       // TODO: Difference between this.$store and useStore()?
       this.$store.dispatch("updateSubtask", {
         boardId: this.board.id,
-        columnId: this.selectedColumnId,
+        columnId: this.selectedTask.columnId,
         taskId: this.selectedTask.id,
         subtaskIndex: subtaskIndex,
         checked: checked,
