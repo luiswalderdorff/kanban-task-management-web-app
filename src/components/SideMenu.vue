@@ -128,14 +128,11 @@ export default {
       },
     };
   },
+  props: ["selectedBoard"],
   computed: {
     boards() {
       const store = useStore();
       return store.state.boards;
-    },
-    selectedBoard() {
-      const store = useStore();
-      return store.state.selectedBoard;
     },
   },
   methods: {

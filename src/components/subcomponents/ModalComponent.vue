@@ -6,7 +6,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { EventBus } from "./EventBus";
+import { EventBus } from "../../services/EventBus";
 
 export default defineComponent({
   props: ["content"],

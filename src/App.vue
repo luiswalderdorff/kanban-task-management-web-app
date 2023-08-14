@@ -3,7 +3,7 @@
     class="grid-container"
     :class="{ 'grid-container--darkened': isDarkened }"
   >
-    <SideMenu v-if="sideMenuOpen" />
+    <SideMenu v-if="sideMenuOpen" :selectedBoard="selectedBoard" />
     <TitleMenu :board="selectedBoard" />
     <MainBoard v-if="selectedBoard" :board="selectedBoard" />
   </div>
@@ -15,7 +15,7 @@ import SideMenu from "./components/SideMenu.vue";
 import MainBoard from "./components/MainBoard.vue";
 import TitleMenu from "./components/TitleMenu.vue";
 import { useStore, mapActions } from "vuex";
-import { EventBus } from "./components/subcomponents/EventBus";
+import { EventBus } from "./services/EventBus";
 
 export default defineComponent({
   name: "App",
