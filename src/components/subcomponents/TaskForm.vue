@@ -31,7 +31,7 @@
           <input
             class="list-editable__input"
             v-model="subtask.name"
-            placeholder="Subtask name"
+            placeholder="Subtask Name"
           />
           <button class="list-editable__remove" @click="removeSubtask(index)">
             <svg

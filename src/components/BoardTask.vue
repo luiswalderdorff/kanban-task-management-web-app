@@ -33,8 +33,13 @@ export default defineComponent({
   }
 
   &__subtasks {
-    color: var(--medium-grey);
+    color: var(--medium-grey) !important;
     margin: 8px 0 0;
+  }
+
+  .dark-mode & {
+    background: var(--dark-grey);
+    color: var(--white);
   }
 }
 </style>

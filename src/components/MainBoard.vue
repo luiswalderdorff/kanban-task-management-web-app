@@ -180,7 +180,7 @@ export default defineComponent({
 .main-board {
   background-color: var(--light-bg);
   position: relative;
-  overflow: scroll;
+  overflow: auto;
 
   &__columns {
     display: flex;
@@ -196,6 +196,10 @@ export default defineComponent({
 
   &__title {
     margin: 8px 0 24px;
+  }
+
+  .dark-mode & {
+    background-color: var(--dark-bg);
   }
 }
 
@@ -213,6 +217,9 @@ export default defineComponent({
   &__description {
     color: var(--medium-grey);
     margin: 24px 0;
+  }
+  .dark-mode & {
+    background-color: var(--dark-bg);
   }
 }
 </style>

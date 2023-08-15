@@ -158,5 +158,10 @@ export default defineComponent({
     align-items: center;
     justify-content: flex-end;
   }
+
+  .dark-mode & {
+    color: var(--white);
+    background: var(--dark-grey);
+  }
 }
 </style>

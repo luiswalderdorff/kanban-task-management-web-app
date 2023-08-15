@@ -21,7 +21,7 @@
           <input
             class="list-editable__input"
             v-model="column.name"
-            placeholder="Subtask name"
+            placeholder="Column Name"
           />
           <button class="list-editable__remove" @click="removeColumn(index)">
             <svg

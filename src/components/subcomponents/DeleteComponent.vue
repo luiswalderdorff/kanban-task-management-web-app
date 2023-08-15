@@ -45,7 +45,7 @@ export default defineComponent({
 <style lang="scss">
 .delete-modal {
   &__heading {
-    color: var(--red);
+    color: var(--red) !important;
     margin-bottom: 24px;
   }
 

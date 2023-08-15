@@ -41,10 +41,14 @@ export default defineComponent({
   padding: 24px;
   box-sizing: border-box;
   max-height: 90vh;
-  overflow: scroll;
+  overflow: auto;
 
   &__section {
     margin-bottom: 24px;
+  }
+
+  .dark-mode & {
+    background-color: var(--dark-grey);
   }
 }
 </style>

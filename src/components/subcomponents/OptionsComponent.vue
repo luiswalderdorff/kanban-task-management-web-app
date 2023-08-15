@@ -105,5 +105,21 @@ export default defineComponent({
       color: var(--red) !important;
     }
   }
+
+  .dark-mode & {
+    &__buttons {
+      background-color: var(--dark-bg);
+      border: 2px solid var(--lines-dark);
+    }
+
+    &__button {
+      border-bottom: 2px solid var(--lines-dark);
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+  }
 }
 </style>

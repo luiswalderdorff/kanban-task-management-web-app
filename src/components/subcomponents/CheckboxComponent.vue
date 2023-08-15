@@ -3,7 +3,7 @@
     <h3 class="modal-subheading">
       Subtasks ({{ subtasksChecked }} of {{ selectedTask.subtasks.length }})
     </h3>
-    <ul class="checkboxes-component">
+    <div class="checkboxes-component">
       <label
         class="checkboxes-component__task"
         v-for="(subtask, index) in selectedTask.subtasks"
@@ -35,7 +35,7 @@
           />
         </svg>
       </label>
-    </ul>
+    </div>
   </div>
 </template>
 
@@ -115,6 +115,19 @@ export default defineComponent({
     top: 50%;
     left: 16px;
     transform: translateY(-50%);
+  }
+
+  .dark-mode & {
+    &__task {
+      background: var(--dark-bg);
+
+      &:hover {
+        background: var(--main-purple);
+      }
+    }
+    &__description {
+      color: var(--white);
+    }
   }
 }
 </style>

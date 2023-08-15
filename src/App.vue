@@ -1,7 +1,7 @@
 <template>
   <div
     class="grid-container"
-    :class="{ 'grid-container--darkened': isDarkened }"
+    :class="{ 'grid-container--darkened': isDarkened, 'dark-mode': darkMode }"
   >
     <SideMenu v-if="sideMenuOpen" :selectedBoard="selectedBoard" />
     <TitleMenu :board="selectedBoard" />
@@ -10,6 +10,33 @@
 </template>
 
 <script lang="ts">
+/* TODOS
+
+
+
+Deactivate mobile side menu, when clicking on main body
+
+
+grey background breaks on mobile scroll to side
+
+Check when creating something when some fields arent filled out. Make fields required
+give columns min width for when they are empty (same as tasks). Make columns look good when they have no tasks. Drag works worse with no items, container to small
+
+Create empty no board, no columns, no tasks state
+
+
+
+Replace useStore() with this.$store
+clickfläche für triple dot optionsmenü erhöhen
+
+Add pointers where needed
+Add darken when opening boards menu on mobile
+
+TODOS End
+remove console.logs
+Check warnings
+Remove any anys
+*/
 import { defineComponent } from "vue";
 import SideMenu from "./components/SideMenu.vue";
 import MainBoard from "./components/MainBoard.vue";
@@ -44,12 +71,14 @@ export default defineComponent({
     boards(): any {
       return this.store.state.boards;
     },
-    selectedBoardId(): any {
+    selectedBoardId(): string {
       return this.store.state.selectedBoardId;
+    },
+    darkMode(): boolean {
+      return this.store.state.darkMode;
     },
   },
   created() {
-    this.initializeSelectedBoard();
     EventBus.on("modal-open", () => {
       this.isDarkened = true;
     });
@@ -57,6 +86,8 @@ export default defineComponent({
       this.isDarkened = false;
     });
     this.getBoardData();
+    this.initializeSelectedBoard();
+    this.store.state.sideMenuOpen = false;
   },
   beforeUnmount() {
     EventBus.off("modal-open");
@@ -133,18 +164,30 @@ body {
   font-size: 24px;
   font-weight: 700;
   margin-top: 0;
+
+  .dark-mode & {
+    color: var(--white);
+  }
 }
 
 .heading-large {
   font-size: 18px;
   font-weight: 700;
   margin-top: 0;
+
+  .dark-mode & {
+    color: var(--white);
+  }
 }
 
 .heading-medium {
   font-size: 15px;
   font-weight: 700;
   margin-top: 0;
+
+  .dark-mode & {
+    color: var(--white);
+  }
 }
 
 .heading-small {
@@ -153,6 +196,10 @@ body {
   font-weight: 700;
   letter-spacing: 2.4px;
   margin-top: 0;
+
+  .dark-mode & {
+    color: var(--white);
+  }
 }
 
 .body-large {
@@ -177,6 +224,9 @@ body {
     "main-board";
   grid-template-rows: auto 1fr;
   min-height: 100vh;
+  * {
+    transition: color 0.3s, background-color 0.3s ease;
+  }
 
   &::after {
     content: "";
@@ -236,7 +286,7 @@ input[type="reset"] {
   display: block;
   width: 100%;
   padding: 8px 14px;
-  color: var(--black, #000112);
+  color: var(--black);
   border-radius: 4px;
   border: 1px solid rgba(130, 143, 163, 0.25);
 
@@ -246,6 +296,15 @@ input[type="reset"] {
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: calc(100% - 14px) center;
+
+  option {
+    padding: 8px 14px;
+  }
+
+  .dark-mode & {
+    color: var(--white);
+    background-color: var(--dark-grey);
+  }
 }
 
 .input-component {
@@ -254,7 +313,7 @@ input[type="reset"] {
   width: 100%;
   border-radius: 4px;
   border: 1px solid rgba(130, 143, 163, 0.25);
-  background: var(--white, #fff);
+  background: var(--white);
   padding: 8px 16px;
   color: var(--black);
   box-sizing: border-box;
@@ -269,6 +328,15 @@ input[type="reset"] {
     outline: none !important;
     border: 2px solid var(--main-purple-hover);
   }
+
+  .dark-mode & {
+    background: var(--dark-grey);
+    color: var(--white);
+
+    &::placeholder {
+      color: var(--white);
+    }
+  }
 }
 
 .modal-subheading {
@@ -276,6 +344,10 @@ input[type="reset"] {
   color: var(--medium-grey);
   margin-bottom: 8px;
   display: block;
+
+  .dark-mode & {
+    color: var(--white);
+  }
 }
 
 .list-editable {
@@ -322,6 +394,17 @@ input[type="reset"] {
 
     &:hover {
       background: rgba(99, 95, 199, 0.25);
+    }
+
+    .dark-mode & {
+      color: var(--main-purple);
+      background: var(--white);
+      transition: background 0.2s, color 0.2s;
+
+      &:hover {
+        background: var(--main-purple-hover);
+        color: var(--white);
+      }
     }
   }
 

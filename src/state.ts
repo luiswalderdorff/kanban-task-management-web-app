@@ -269,6 +269,7 @@ export default createStore({
         // TODO: Add first board naturally
         selectedBoardId: null,
         sideMenuOpen: false,
+        darkMode: false,
       },
   actions: {
     async saveBoard({ state, commit }, board) {
@@ -331,13 +332,18 @@ export default createStore({
       this.commit("TOGGLE_SIDE_MENU");
     },
     initializeSelectedBoard({ commit, state }) {
-      const selectedBoardId =
-        state.boards.length > 0 ? state.boards[0].id : null;
-      commit("SET_SELECTED_BOARD_ID", selectedBoardId);
+      if (!state.selectedBoardId) {
+        const selectedBoardId =
+          state.boards.length > 0 ? state.boards[0].id : null;
+        commit("SET_SELECTED_BOARD_ID", selectedBoardId);
+      }
     },
     // TODO: Objekt at the moment is referenced directly and changed. In the future, create deep copy, change it manually through mutations
     updateSubtask({ commit }, payload) {
       //commit("UPDATE_SUBTASK", payload);
+    },
+    toggleDarkMode({ commit }) {
+      commit("TOGGLE_DARK_MODE");
     },
   },
   mutations: {
@@ -386,6 +392,9 @@ export default createStore({
     },
     DELETE_TASK(state, { column, taskIndex }) {
       column.tasks.splice(taskIndex, 1);
+    },
+    TOGGLE_DARK_MODE(state) {
+      state.darkMode = !state.darkMode;
     },
   },
   plugins: [localStoragePlugin],
