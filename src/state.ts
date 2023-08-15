@@ -306,6 +306,22 @@ export default createStore({
         }
       }
     },
+    deleteTask({ commit, state }, task) {
+      const board = state.boards.find((board: any) =>
+        board.columns.some((column: any) =>
+          column.tasks.some((t: any) => t.id === task.id)
+        )
+      );
+      if (board) {
+        const column = board.columns.find((column: any) =>
+          column.tasks.some((t: any) => t.id === task.id)
+        );
+        const taskIndex = column.tasks.findIndex(
+          (existingTask: any) => existingTask.id === task.id
+        );
+        commit("DELETE_TASK", { column, taskIndex });
+      }
+    },
     toggleSideMenu() {
       this.commit("TOGGLE_SIDE_MENU");
     },
@@ -342,8 +358,6 @@ export default createStore({
       state,
       { boardId, columnId, taskId, subtaskIndex, checked }
     ) {
-      console.log(state);
-
       /*const board = state.boards.find((board: any) => board.id === boardId);
       const column = board.columns.find(
         (column: any) => column.id === columnId
@@ -362,7 +376,9 @@ export default createStore({
     EDIT_TASK(state, { column, taskIndex, task }) {
       column.tasks.splice(taskIndex, 1, task);
     },
+    DELETE_TASK(state, { column, taskIndex }) {
+      column.tasks.splice(taskIndex, 1);
+    },
   },
-  // TODO: What does this do?
   plugins: [localStoragePlugin],
 });

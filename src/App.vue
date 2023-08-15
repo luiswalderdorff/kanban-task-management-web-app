@@ -65,7 +65,6 @@ export default defineComponent({
       this.selectedBoard = this.store.state.boards.find(
         (board: any) => board.id === this.store.state.selectedBoardId
       );
-      console.log(this.selectedBoard);
     },
   },
   watch: {

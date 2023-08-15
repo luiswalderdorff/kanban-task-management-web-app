@@ -28,7 +28,7 @@
 
     <!-- TODO: Create component -->
     <ModalComponent class="task-modal" :content="selectedTask">
-      <div class="task-modal__header">
+      <div class="task-modal__header" v-if="!deleteTask">
         <h2 class="heading-large task-modal__title">
           <template v-if="!editTask">{{ selectedTask.title }}</template>
           <template v-else>Edit Task</template>
@@ -41,9 +41,18 @@
             selectedTask = null;
             editTask = false;
           "
+          @delete-event="deleteTask = true"
         />
       </div>
-      <template v-if="!editTask">
+      <template v-if="deleteTask">
+        <DeleteComponent
+          @cancel-delete-event="deleteTask = false"
+          @delete-confirmation-event="deleteTaskFunction()"
+          type="task"
+          :title="selectedTask.title"
+        />
+      </template>
+      <template v-else-if="!editTask">
         <div class="modal__section">
           <p class="body-large task-modal__description">
             {{ selectedTask.description }}
@@ -93,6 +102,7 @@ import ModalComponent from "./subcomponents/ModalComponent.vue";
 import CheckboxComponent from "./subcomponents/CheckboxComponent.vue";
 import OptionsComponent from "./subcomponents/OptionsComponent.vue";
 import TaskForm from "./subcomponents/TaskForm.vue";
+import DeleteComponent from "./subcomponents/DeleteComponent.vue";
 
 export default defineComponent({
   props: ["board"],
@@ -106,6 +116,7 @@ export default defineComponent({
       },
       selectedTask: null as any,
       editTask: false,
+      deleteTask: false,
       drag: false,
     };
   },
@@ -116,6 +127,7 @@ export default defineComponent({
     draggable,
     OptionsComponent,
     TaskForm,
+    DeleteComponent,
   },
   methods: {
     showTask(task: any, columnId: string) {
@@ -125,7 +137,6 @@ export default defineComponent({
       const oldColumn = this.board.columns.find(
         (column: any) => column.id === oldColumnId
       );
-      console.log(oldColumnId);
 
       oldColumn.tasks = oldColumn.tasks.filter(
         (t: any) => t.id !== this.selectedTask.id
@@ -137,6 +148,11 @@ export default defineComponent({
       );
 
       newColumn.tasks.push(this.selectedTask);
+    },
+    deleteTaskFunction() {
+      this.$store.dispatch("deleteTask", this.selectedTask);
+      this.selectedTask = null;
+      this.deleteTask = false;
     },
   },
   watch: {

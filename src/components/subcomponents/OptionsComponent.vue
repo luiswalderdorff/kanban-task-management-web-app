@@ -18,7 +18,10 @@
         <template v-if="!edit">Edit {{ type }}</template>
         <template v-else> Stop Editing</template>
       </button>
-      <button class="options__button options__button--danger body-large">
+      <button
+        class="options__button options__button--danger body-large"
+        @click="emitDeleteEvent"
+      >
         Delete {{ type }}
       </button>
       <button class="options__button body-large" @click="emitCloseEvent">
@@ -40,7 +43,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: ["type"],
-  emits: ["edit-event", "close-event"],
+  emits: ["edit-event", "close-event", "delete-event"],
   data() {
     return {
       optionsOpened: false,
@@ -56,6 +59,10 @@ export default defineComponent({
     emitCloseEvent() {
       this.editTask = false;
       this.$emit("close-event");
+    },
+    emitDeleteEvent() {
+      this.optionsOpened = false;
+      this.$emit("delete-event");
     },
   },
 });
