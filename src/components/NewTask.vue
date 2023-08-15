@@ -8,10 +8,35 @@
       +
     </button>
     <ModalComponent :content="modalOpen">
-      <h2 class="heading-large">Add New Task</h2>
+      <div class="new-task__header">
+        <h2 class="heading-large">Add New Task</h2>
+        <button @click="modalOpen = false">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 15 15"
+            fill="none"
+          >
+            <rect
+              x="12.7279"
+              width="3"
+              height="18"
+              transform="rotate(45 12.7279 0)"
+              fill="#828FA3"
+            />
+            <rect
+              y="2.12109"
+              width="3"
+              height="18"
+              transform="rotate(-45 0 2.12109)"
+              fill="#828FA3"
+            />
+          </svg>
+        </button>
+      </div>
 
-      <task-form :board="board" />
-      <button @click="modalOpen = false">Close</button>
+      <task-form :board="board" @close-event="modalOpen = false" />
     </ModalComponent>
   </div>
 </template>
@@ -34,6 +59,10 @@ export default defineComponent({
 
 <style lang="scss">
 .new-task {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
   &__button {
     background-color: var(--main-purple);
     color: var(--white);

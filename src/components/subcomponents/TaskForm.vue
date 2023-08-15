@@ -89,6 +89,7 @@ import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 
 export default defineComponent({
+  emits: ["close-event"],
   props: {
     board: {
       type: Object,
@@ -116,6 +117,8 @@ export default defineComponent({
   created() {
     if (this.task) {
       this.newTask = this.task;
+    } else {
+      this.newTask.columnId = this.board.columns[0].id;
     }
   },
   methods: {
@@ -136,6 +139,7 @@ export default defineComponent({
           columnId: null,
         };
       }
+      this.$emit("close-event");
     },
   },
 });

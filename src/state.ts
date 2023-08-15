@@ -329,10 +329,7 @@ export default createStore({
     SELECT_BOARD(state, boardId) {
       state.selectedBoardId = boardId;
     },
-    ADD_TASK(state, task) {
-      const column = state.boards
-        .find((board: any) => board.id === task.boardId)
-        .columns.find((column: any) => column.id === task.columnId);
+    ADD_TASK(state, { column, task }) {
       column.tasks.push(task);
     },
     TOGGLE_SIDE_MENU(state) {

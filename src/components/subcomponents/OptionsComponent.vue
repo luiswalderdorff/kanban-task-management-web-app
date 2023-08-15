@@ -75,6 +75,7 @@ export default defineComponent({
     border-radius: 8px;
     border: 2px solid var(--lines-light);
     background: var(--white);
+    z-index: 2;
   }
 
   &__button {

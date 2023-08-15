@@ -39,7 +39,7 @@
           @edit-event="editTask = $event"
           @close-event="
             selectedTask = null;
-            console.log(456);
+            editTask = false;
           "
         />
       </div>
@@ -69,18 +69,17 @@
             </option>
           </select>
         </div>
-
-        <button
-          @click="
+      </template>
+      <template v-else>
+        <task-form
+          :task="selectedTask"
+          :board="board"
+          :edit="true"
+          @close-event="
             selectedTask = null;
             editTask = false;
           "
-        >
-          Close
-        </button>
-      </template>
-      <template v-else>
-        <task-form :task="selectedTask" :board="board" :edit="true" />
+        />
       </template>
     </ModalComponent>
   </div>
