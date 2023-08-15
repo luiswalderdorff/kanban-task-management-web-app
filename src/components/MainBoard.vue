@@ -34,7 +34,14 @@
           <template v-else>Edit Task</template>
         </h2>
 
-        <options-component type="Task" @edit-event="editTask = true" />
+        <options-component
+          type="Task"
+          @edit-event="editTask = $event"
+          @close-event="
+            selectedTask = null;
+            console.log(456);
+          "
+        />
       </div>
       <template v-if="!editTask">
         <div class="modal__section">
@@ -73,7 +80,7 @@
         </button>
       </template>
       <template v-else>
-        <task-form :task="selectedTask" :board="board" />
+        <task-form :task="selectedTask" :board="board" :edit="true" />
       </template>
     </ModalComponent>
   </div>

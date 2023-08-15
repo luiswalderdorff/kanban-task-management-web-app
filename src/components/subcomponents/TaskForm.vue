@@ -76,14 +76,17 @@
       </select>
     </div>
 
-    <button @click="addTask" class="button">Create Task</button>
+    <button @click="saveTask" class="button">
+      <template v-if="!newTask.id">Create</template
+      ><template v-else>Edit</template>
+      Task
+    </button>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { mapActions } from "vuex";
-import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
   props: {
@@ -95,6 +98,10 @@ export default defineComponent({
       type: Object,
       default: null,
     },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -102,14 +109,13 @@ export default defineComponent({
         title: "",
         description: "",
         subtasks: [{ name: "" }],
-        columnIndex: null,
+        columnId: null,
       },
     };
   },
   created() {
     if (this.task) {
       this.newTask = this.task;
-      console.log(this.newTask);
     }
   },
   methods: {
@@ -120,17 +126,16 @@ export default defineComponent({
     removeSubtask(index) {
       this.newTask.subtasks.splice(index, 1);
     },
-    async addTask() {
-      await this.$store.dispatch("addTask", {
-        ...this.newTask,
-        id: uuidv4(),
-      });
-      this.newTask = {
-        title: "",
-        description: "",
-        subtasks: [{ name: "" }],
-        columnIndex: null,
-      };
+    async saveTask() {
+      await this.$store.dispatch("saveTask", this.newTask);
+      if (!this.newTask.id) {
+        this.newTask = {
+          title: "",
+          description: "",
+          subtasks: [{ name: "" }],
+          columnId: null,
+        };
+      }
     },
   },
 });

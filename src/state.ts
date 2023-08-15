@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import { localStoragePlugin } from "./services/localStoragePlugin";
+import { v4 as uuidv4 } from "uuid";
 
 const savedState = localStorage.getItem("state");
 
@@ -284,16 +285,25 @@ export default createStore({
     selectBoard({ commit }, board) {
       commit("SELECT_BOARD", board.id);
     },
-    async addTask({ state, commit }, newTask) {
+    async saveTask({ state, commit }, task) {
       const board = state.boards.find((board: any) =>
-        board.columns.some((column: any) => column.id === newTask.columnId)
+        board.columns.some((column: any) => column.id === task.columnId)
       );
       if (board) {
         const column = board.columns.find(
-          (column: any) => column.id === newTask.columnId
+          (column: any) => column.id === task.columnId
         );
-        column.tasks.push(newTask);
-        commit("ADD_TASK", newTask);
+        if (task.id) {
+          // Edit existing task
+          const taskIndex = column.tasks.findIndex(
+            (existingTask: any) => existingTask.id === task.id
+          );
+          commit("EDIT_TASK", { column, taskIndex, task });
+        } else {
+          // Add new task
+          task.id = uuidv4();
+          commit("ADD_TASK", { column, task });
+        }
       }
     },
     toggleSideMenu() {
@@ -351,6 +361,9 @@ export default createStore({
       // Update the state based on the event
       // You can access the old and new indices of the moved task from event.oldIndex and event.newIndex
       // You can access the old and new column from event.from and event.to
+    },
+    EDIT_TASK(state, { column, taskIndex, task }) {
+      column.tasks.splice(taskIndex, 1, task);
     },
   },
   // TODO: What does this do?

@@ -15,10 +15,14 @@
     </svg>
     <div class="options__buttons" v-if="optionsOpened">
       <button class="options__button body-large" @click="emitEditEvent">
-        Edit {{ type }}
+        <template v-if="!edit">Edit {{ type }}</template>
+        <template v-else> Stop Editing</template>
       </button>
       <button class="options__button options__button--danger body-large">
         Delete {{ type }}
+      </button>
+      <button class="options__button body-large" @click="emitCloseEvent">
+        Close
       </button>
     </div>
     <!--<div class="modal">
@@ -36,16 +40,22 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: ["type"],
-  emits: ["edit-event"],
+  emits: ["edit-event", "close-event"],
   data() {
     return {
       optionsOpened: false,
+      edit: false,
     };
   },
   methods: {
     emitEditEvent() {
       this.optionsOpened = false;
-      this.$emit("edit-event");
+      this.edit = !this.edit;
+      this.$emit("edit-event", this.edit);
+    },
+    emitCloseEvent() {
+      this.editTask = false;
+      this.$emit("close-event");
     },
   },
 });
