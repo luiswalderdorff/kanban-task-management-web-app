@@ -15,7 +15,7 @@
     </svg>
     <div class="options__buttons" v-if="optionsOpened">
       <button class="options__button body-large" @click="emitEditEvent">
-        <template v-if="!edit">Edit {{ type }}</template>
+        <template v-if="!edit || type !== 'Task'">Edit {{ type }}</template>
         <template v-else> Stop Editing</template>
       </button>
       <button
@@ -24,17 +24,14 @@
       >
         Delete {{ type }}
       </button>
-      <button class="options__button body-large" @click="emitCloseEvent">
+      <button
+        v-if="type === 'Task'"
+        class="options__button body-large"
+        @click="emitCloseEvent"
+      >
         Close
       </button>
     </div>
-    <!--<div class="modal">
-      <h2 class="heading-large">Delete this {{ type }}?</h2>
-      <p class="body-large">
-        Are you sure you want to delete the ‘Platform Launch’ board? This action
-        will remove all columns and tasks and cannot be reversed.
-      </p>
-    </div>-->
   </div>
 </template>
 
@@ -72,6 +69,8 @@ export default defineComponent({
 .options {
   position: relative;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &__buttons {
     position: absolute;

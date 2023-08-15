@@ -51,8 +51,35 @@
     </div>
     <div class="title-menu__options">
       <NewTask :board="board" />
-      <EditBoard :board="board" />
+      <options-component
+        type="Board"
+        @edit-event="modalOpen = true"
+        @delete-event="
+          modalOpen = true;
+          deleteBoard = true;
+        "
+      />
     </div>
+    <modal-component :content="modalOpen">
+      <delete-component
+        v-if="deleteBoard"
+        @cancel-delete-event="
+          deleteBoard = false;
+          modalOpen = false;
+        "
+        @delete-confirmation-event="deleteBoardFunction()"
+        type="board"
+        :title="board.name"
+      />
+      <template v-else>
+        <h2 class="heading-large">Edit Board</h2>
+        <board-form
+          :board="board"
+          :edit="true"
+          @close-event="modalOpen = false"
+        />
+      </template>
+    </modal-component>
   </div>
 </template>
 
@@ -60,13 +87,19 @@
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import NewTask from "./NewTask.vue";
-import EditBoard from "./EditBoard.vue";
 import { mapActions } from "vuex";
+import OptionsComponent from "./subcomponents/OptionsComponent.vue";
+import BoardForm from "./subcomponents/BoardForm.vue";
+import ModalComponent from "./subcomponents/ModalComponent.vue";
+import DeleteComponent from "./subcomponents/DeleteComponent.vue";
 
 export default defineComponent({
   data() {
     return {
       menuOpen: false,
+      modalOpen: false,
+      editBoard: false,
+      deleteBoard: false,
     };
   },
   props: ["board"],
@@ -76,9 +109,18 @@ export default defineComponent({
       return store.state.sideMenuOpen;
     },
   },
-  components: { NewTask, EditBoard },
+  components: {
+    NewTask,
+    OptionsComponent,
+    BoardForm,
+    ModalComponent,
+    DeleteComponent,
+  },
   methods: {
     ...mapActions(["toggleSideMenu"]),
+    deleteBoardFunction() {
+      console.log("123");
+    },
   },
 });
 </script>

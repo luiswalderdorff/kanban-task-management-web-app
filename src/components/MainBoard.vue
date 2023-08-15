@@ -8,7 +8,7 @@
       >
         <h2 class="heading-small main-board__title">
           {{ column.name }}
-          <template v-if="column.tasks.length"
+          <template v-if="column.tasks && column.tasks.length"
             >({{ column.tasks.length }})</template
           >
         </h2>

@@ -19,7 +19,7 @@
       ></textarea>
     </div>
 
-    <!-- TODO: Create Component for tasks and board -->
+    <!-- TODO: Create  for tasks and board -->
     <div class="modal__section">
       <h3 class="modal-subheading">Subtasks</h3>
       <div

@@ -136,7 +136,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["addBoard"]),
+    // TODO: Add BoardForm
+    //...mapActions(["addBoard"]),
     ...mapActions(["selectBoard"]),
     addColumn() {
       this.newBoard.columns.push({ name: "", id: uuidv4(), tasks: [] });
@@ -145,7 +146,7 @@ export default {
       this.newBoard.columns.splice(index, 1);
     },
     async createBoard() {
-      await this.addBoard(this.newBoard);
+      //await this.addBoard(this.newBoard);
       this.newBoard = {
         name: "",
         columns: [{ name: "", id: uuidv4(), tasks: [] }],

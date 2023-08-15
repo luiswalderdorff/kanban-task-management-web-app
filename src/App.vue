@@ -44,6 +44,9 @@ export default defineComponent({
     boards(): any {
       return this.store.state.boards;
     },
+    selectedBoardId(): any {
+      return this.store.state.selectedBoardId;
+    },
   },
   created() {
     this.initializeSelectedBoard();
@@ -73,6 +76,9 @@ export default defineComponent({
       handler() {
         this.getBoardData();
       },
+    },
+    selectedBoardId() {
+      this.getBoardData();
     },
     // TODO: Remove later when all changes happen through mutations
     "$store.state": {

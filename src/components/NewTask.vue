@@ -59,6 +59,7 @@ export default defineComponent({
 
 <style lang="scss">
 .new-task {
+  margin-right: 16px;
   &__header {
     display: flex;
     justify-content: space-between;

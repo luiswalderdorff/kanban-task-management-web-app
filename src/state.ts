@@ -268,21 +268,26 @@ export default createStore({
         ] as any[],
         // TODO: Add first board naturally
         selectedBoardId: null,
-        newTask: {
-          id: "",
-          title: "",
-          description: "",
-          subtasks: [],
-          columnId: "",
-        },
         sideMenuOpen: false,
       },
   actions: {
-    addBoard({ commit }, board) {
-      const id = Date.now();
-      commit("ADD_BOARD", { id, ...board });
+    async saveBoard({ state, commit }, board) {
+      if (!board.id) {
+        // Add new board
+        board.id = uuidv4();
+        commit("ADD_BOARD", board);
+      } else {
+        // Edit existing board
+        const boardIndex = state.boards.findIndex(
+          (b: any) => b.id === board.id
+        );
+        if (boardIndex !== -1) {
+          commit("EDIT_BOARD", { boardIndex, board });
+        }
+      }
     },
-    selectBoard({ commit }, board) {
+    selectBoard({ state, commit }, board) {
+      state.sideMenuOpen = !state.sideMenuOpen;
       commit("SELECT_BOARD", board.id);
     },
     async saveTask({ state, commit }, task) {
@@ -341,6 +346,9 @@ export default createStore({
       if (!state.selectedBoardId) {
         state.selectedBoardId = board.id;
       }
+    },
+    EDIT_BOARD(state, { boardIndex, board }) {
+      state.boards.splice(boardIndex, 1, board);
     },
     SELECT_BOARD(state, boardId) {
       state.selectedBoardId = boardId;
