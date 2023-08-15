@@ -2,7 +2,6 @@
   <div class="board-task">
     <!-- TODO: Add colors -->
     <h3 class="heading-medium board-task__title">{{ task.title }}</h3>
-    <!-- TODO: calculate finished subtasks and test with 0 subtasks -->
     <p class="body-medium board-task__subtasks">
       {{ task.subtasks.filter((subtask: any) => subtask.checked).length }} of
       {{ task.subtasks.length }} subtasks
@@ -19,6 +18,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.main-board__column {
+  min-height: 80vh;
+
+  h2 {
+    width: 280px;
+  }
+
+  & > div {
+    min-height: 80%;
+  }
+}
 .board-task {
   width: 280px;
   max-width: 75vw;
@@ -27,6 +37,7 @@ export default defineComponent({
   box-shadow: 0px 4px 6px 0px rgba(54, 78, 126, 0.1);
   padding: 23px 16px;
   margin-bottom: 20px;
+  box-sizing: border-box;
 
   &__title {
     margin: 0;

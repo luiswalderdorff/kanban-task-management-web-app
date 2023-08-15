@@ -116,7 +116,6 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { v4 as uuidv4 } from "uuid";
-import { useStore } from "vuex";
 import ModalComponent from "./subcomponents/ModalComponent.vue";
 import BoardForm from "./subcomponents/BoardForm.vue";
 
@@ -134,8 +133,7 @@ export default {
   components: { ModalComponent, BoardForm },
   computed: {
     boards() {
-      const store = useStore();
-      return store.state.boards;
+      return this.$store.state.boards;
     },
     ...mapState(["darkMode"]),
   },

@@ -1,6 +1,6 @@
 <template>
-  <div class="main-board">
-    <div class="main-board__columns" v-if="board">
+  <div class="main-board" v-if="board">
+    <template v-if="board.columns.length">
       <div
         class="main-board__column"
         v-for="(column, index) in board.columns"
@@ -24,7 +24,17 @@
           </template>
         </draggable>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <div class="main-board__empty">
+        <div>
+          <h2 class="heading-large">
+            This board is empty. Create a new column to get started.
+          </h2>
+          <button class="button button--primary">+ Add New Collumn</button>
+        </div>
+      </div>
+    </template>
 
     <!-- TODO: Create component -->
     <ModalComponent class="task-modal" :content="selectedTask">
@@ -181,10 +191,7 @@ export default defineComponent({
   background-color: var(--light-bg);
   position: relative;
   overflow: auto;
-
-  &__columns {
-    display: flex;
-  }
+  display: flex;
 
   &__column {
     padding-right: 24px;
@@ -196,6 +203,22 @@ export default defineComponent({
 
   &__title {
     margin: 8px 0 24px;
+  }
+
+  &__empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+    text-align: center;
+
+    .heading-large {
+      color: var(--medium-grey);
+      margin-bottom: 25px;
+    }
   }
 
   .dark-mode & {
@@ -217,9 +240,6 @@ export default defineComponent({
   &__description {
     color: var(--medium-grey);
     margin: 24px 0;
-  }
-  .dark-mode & {
-    background-color: var(--dark-bg);
   }
 }
 </style>

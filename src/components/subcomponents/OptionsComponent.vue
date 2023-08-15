@@ -106,6 +106,15 @@ export default defineComponent({
     }
   }
 
+  &__open {
+    // Expand clickable area
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    padding: 2em;
+    margin: -2em;
+  }
+
   .dark-mode & {
     &__buttons {
       background-color: var(--dark-bg);

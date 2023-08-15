@@ -11,37 +11,23 @@
 
 <script lang="ts">
 /* TODOS
-
-
-
-Deactivate mobile side menu, when clicking on main body
-
-
-grey background breaks on mobile scroll to side
-
+Create empty no board state
 Check when creating something when some fields arent filled out. Make fields required
-give columns min width for when they are empty (same as tasks). Make columns look good when they have no tasks. Drag works worse with no items, container to small
-
-Create empty no board, no columns, no tasks state
-
-
-
-Replace useStore() with this.$store
-clickfläche für triple dot optionsmenü erhöhen
-
-Add pointers where needed
-Add darken when opening boards menu on mobile
+Make style responsive
 
 TODOS End
+Check To Dos
+Add pointers where needed
 remove console.logs
 Check warnings
 Remove any anys
+Test on mobile
 */
 import { defineComponent } from "vue";
 import SideMenu from "./components/SideMenu.vue";
 import MainBoard from "./components/MainBoard.vue";
 import TitleMenu from "./components/TitleMenu.vue";
-import { useStore, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import { EventBus } from "./services/EventBus";
 
 export default defineComponent({
@@ -51,13 +37,6 @@ export default defineComponent({
     MainBoard,
     TitleMenu,
   },
-  setup() {
-    const store = useStore();
-
-    return {
-      store,
-    };
-  },
   data() {
     return {
       isDarkened: false,
@@ -66,16 +45,16 @@ export default defineComponent({
   },
   computed: {
     sideMenuOpen(): boolean {
-      return this.store.state.sideMenuOpen;
+      return this.$store.state.sideMenuOpen;
     },
     boards(): any {
-      return this.store.state.boards;
+      return this.$store.state.boards;
     },
     selectedBoardId(): string {
-      return this.store.state.selectedBoardId;
+      return this.$store.state.selectedBoardId;
     },
     darkMode(): boolean {
-      return this.store.state.darkMode;
+      return this.$store.state.darkMode;
     },
   },
   created() {
@@ -87,7 +66,7 @@ export default defineComponent({
     });
     this.getBoardData();
     this.initializeSelectedBoard();
-    this.store.state.sideMenuOpen = false;
+    this.$store.state.sideMenuOpen = false;
   },
   beforeUnmount() {
     EventBus.off("modal-open");
@@ -96,8 +75,8 @@ export default defineComponent({
   methods: {
     ...mapActions(["initializeSelectedBoard"]),
     getBoardData() {
-      this.selectedBoard = this.store.state.boards.find(
-        (board: any) => board.id === this.store.state.selectedBoardId
+      this.selectedBoard = this.$store.state.boards.find(
+        (board: any) => board.id === this.$store.state.selectedBoardId
       );
     },
   },

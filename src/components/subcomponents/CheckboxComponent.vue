@@ -53,7 +53,6 @@ export default defineComponent({
   },
   methods: {
     updateSubtaskChecked(subtaskIndex: any, checked: boolean) {
-      // TODO: Difference between this.$store and useStore()?
       this.$store.dispatch("updateSubtask", {
         boardId: this.board.id,
         columnId: this.selectedTask.columnId,
@@ -79,6 +78,8 @@ export default defineComponent({
     display: flex;
     align-items: center;
     transition: background 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 
     &:hover {
       background: var(--main-purple-hover);

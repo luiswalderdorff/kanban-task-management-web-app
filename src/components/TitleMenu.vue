@@ -85,7 +85,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
 import NewTask from "./NewTask.vue";
 import { mapActions } from "vuex";
 import OptionsComponent from "./subcomponents/OptionsComponent.vue";
@@ -105,8 +104,7 @@ export default defineComponent({
   props: ["board"],
   computed: {
     sideMenuOpen(): boolean {
-      const store = useStore();
-      return store.state.sideMenuOpen;
+      return this.$store.state.sideMenuOpen;
     },
   },
   components: {
