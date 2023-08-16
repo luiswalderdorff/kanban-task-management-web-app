@@ -48,6 +48,7 @@ export default defineComponent({
 
   &__title {
     margin: 0;
+    word-wrap: break-word;
   }
 
   &__subtasks {

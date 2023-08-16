@@ -13,13 +13,7 @@
 /* TODOS
 side menu border disappears when scrolling main board on x axis
 add hiding sidemenu
-
-TODOS End
-Check To Dos
-Check warnings
-Remove any anys
-Test on mobile
-Remove test data
+long title for tasks or boards (or columns?) text wrap.
 */
 import { defineComponent } from "vue";
 import SideMenu from "./components/SideMenu.vue";
@@ -245,8 +239,8 @@ body {
 }
 
 .side-menu-container {
-  grid-area: side-menu-container;
   @media only screen and (min-width: 768px) {
+    grid-area: side-menu-container;
     border-right: 1px solid var(--lines-light);
 
     .dark-mode & {
