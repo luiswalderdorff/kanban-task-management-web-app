@@ -4,15 +4,17 @@
     <p class="body-large delete-modal__body">
       {{ bodyText }}
     </p>
-    <button
-      class="button button--destructive delete-modal__delete-button"
-      @click="emitDeleteConfirmationEvent"
-    >
-      Delete
-    </button>
-    <button class="button button--secondary" @click="emitCancelDeleteEvent">
-      Cancel
-    </button>
+    <div class="delete-modal__buttons">
+      <button
+        class="button button--destructive delete-modal__delete-button"
+        @click="emitDeleteConfirmationEvent"
+      >
+        Delete
+      </button>
+      <button class="button button--secondary" @click="emitCancelDeleteEvent">
+        Cancel
+      </button>
+    </div>
   </div>
 </template>
 
@@ -54,8 +56,18 @@ export default defineComponent({
     margin-bottom: 24px;
   }
 
+  &__buttons {
+    @media only screen and (min-width: 768px) {
+      display: flex;
+    }
+  }
+
   &__delete-button {
     margin-bottom: 16px;
+    @media only screen and (min-width: 768px) {
+      margin-bottom: 0;
+      margin-right: 16px;
+    }
   }
 }
 </style>

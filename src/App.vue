@@ -3,7 +3,7 @@
     class="grid-container"
     :class="{ 'grid-container--darkened': isDarkened, 'dark-mode': darkMode }"
   >
-    <SideMenu v-if="sideMenuOpen" :selectedBoard="selectedBoard" />
+    <SideMenu :selectedBoard="selectedBoard" />
     <TitleMenu :board="selectedBoard" />
     <MainBoard :board="selectedBoard" />
   </div>
@@ -11,12 +11,11 @@
 
 <script lang="ts">
 /* TODOS
-Make style responsive
+side menu border disappears when scrolling main board on x axis
+add hiding sidemenu
 
 TODOS End
 Check To Dos
-Add pointers where needed
-remove console.logs
 Check warnings
 Remove any anys
 Test on mobile
@@ -66,7 +65,9 @@ export default defineComponent({
     });
     this.getBoardData();
     this.initializeSelectedBoard();
-    this.$store.state.sideMenuOpen = false;
+    if (this.$store.state.mobile) {
+      this.$store.state.sideMenuOpen = false;
+    }
   },
   beforeUnmount() {
     EventBus.off("modal-open");
@@ -110,6 +111,7 @@ export default defineComponent({
   --lines-light: #e4ebfa;
   --main-purple: #635fc7;
   --main-purple-hover: #a8a4ff;
+  --main-purple-hover-light: rgba(99, 95, 199, 0.1);
   --medium-grey: #828fa3;
   --red: #ea5555;
   --red-hover: #ff9898;
@@ -233,19 +235,42 @@ body {
     grid-template-columns: 1fr 3fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
-      "side-menu title-menu"
-      "side-menu main-board";
+      "side-menu-container title-menu"
+      "side-menu-container main-board";
     height: 100vh;
+  }
+  @media only screen and (min-width: 1200px) {
+    grid-template-columns: 300px 3fr;
   }
 }
 
-.side-menu {
-  grid-area: side-menu;
+.side-menu-container {
+  grid-area: side-menu-container;
+  @media only screen and (min-width: 768px) {
+    border-right: 1px solid var(--lines-light);
+
+    .dark-mode & {
+      border-right: 1px solid var(--lines-dark);
+    }
+  }
 }
 
 .title-menu {
   grid-area: title-menu;
   padding: 16px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--lines-light);
+
+    .dark-mode & {
+      border-bottom: 1px solid var(--lines-dark);
+    }
+  }
+
+  @media only screen and (min-width: 1200px) {
+    padding: 24px;
+  }
 }
 
 .main-board {
@@ -273,7 +298,7 @@ input[type="reset"] {
   color: var(--black);
   border-radius: 4px;
   border: 1px solid rgba(130, 143, 163, 0.25);
-
+  cursor: pointer;
   appearance: none;
   position: relative;
   background-image: url("./assets/icons/icon-chevron-down.svg");
@@ -376,6 +401,10 @@ input[type="reset"] {
   color: var(--red);
   background-color: var(--white);
   padding-left: 5px;
+
+  .dark-mode & {
+    background-color: var(--dark-grey);
+  }
 }
 
 .button {

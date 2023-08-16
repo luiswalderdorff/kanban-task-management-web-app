@@ -38,6 +38,13 @@ export default defineComponent({
   padding: 23px 16px;
   margin-bottom: 20px;
   box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    .board-task__title {
+      color: var(--main-purple);
+    }
+  }
 
   &__title {
     margin: 0;

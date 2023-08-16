@@ -2,6 +2,7 @@
   <div class="title-menu">
     <div class="title-menu__header">
       <svg
+        v-if="$store.state.mobile"
         class="title-menu__logo"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -35,6 +36,7 @@
         <svg
           class="title-menu__open-icon"
           :class="{ 'title-menu__open-icon--opened': sideMenuOpen }"
+          v-if="$store.state.mobile"
           xmlns="http://www.w3.org/2000/svg"
           width="9"
           height="7"
@@ -117,11 +119,25 @@ export default defineComponent({
 
   &__title {
     margin: 0 0 0 16px;
+
+    @media only screen and (min-width: 768px) {
+      font-size: 20px !important;
+      margin: 0;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      font-size: 24px !important;
+    }
   }
 
   &__open-side-menu {
     display: flex;
     align-items: center;
+    cursor: pointer;
+
+    @media only screen and (min-width: 768px) {
+      cursor: initial;
+    }
   }
 
   &__open-icon {

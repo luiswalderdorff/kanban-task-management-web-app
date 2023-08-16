@@ -41,6 +41,11 @@ export default defineComponent({
   max-height: 90vh;
   overflow: auto;
 
+  @media only screen and (min-width: 768px) {
+    width: 480px;
+    padding: 32px;
+  }
+
   &__section {
     margin-bottom: 24px;
   }

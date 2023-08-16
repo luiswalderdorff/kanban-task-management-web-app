@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="modal-subheading">
+    <h3 class="modal-subheading" v-if="selectedTask.subtasks.length">
       Subtasks ({{ subtasksChecked }} of {{ selectedTask.subtasks.length }})
     </h3>
     <div class="checkboxes-component">
@@ -81,6 +81,7 @@ export default defineComponent({
     transition: background 0.2s;
     width: 100%;
     box-sizing: border-box;
+    cursor: pointer;
 
     &:hover {
       background: var(--main-purple-hover);

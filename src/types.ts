@@ -28,6 +28,7 @@ export interface State {
   selectedBoardId: number | null;
   sideMenuOpen: boolean;
   darkMode: boolean;
+  mobile: boolean;
 }
 
 export interface Payload {

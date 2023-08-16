@@ -39,10 +39,5 @@ export default defineComponent({
       this.$emit("close-event");
     },
   },
-  watch: {
-    modalOpen(val) {
-      console.log(val);
-    },
-  },
 });
 </script>

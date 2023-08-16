@@ -269,6 +269,7 @@ export default createStore({
         ] as Board[],
         selectedBoardId: null,
         sideMenuOpen: false,
+        mobile: false,
         darkMode: false,
       },
   actions: {
@@ -288,7 +289,9 @@ export default createStore({
       }
     },
     selectBoard({ state, commit }, board) {
-      state.sideMenuOpen = !state.sideMenuOpen;
+      if (state.mobile) {
+        state.sideMenuOpen = !state.sideMenuOpen;
+      }
       commit("SELECT_BOARD", board.id);
     },
     async saveTask({ state, commit }, task) {
@@ -328,8 +331,10 @@ export default createStore({
         commit("DELETE_TASK", { column, taskIndex });
       }
     },
-    toggleSideMenu() {
-      this.commit("TOGGLE_SIDE_MENU");
+    toggleSideMenu({ state }) {
+      if (state.mobile) {
+        this.commit("TOGGLE_SIDE_MENU");
+      }
     },
     initializeSelectedBoard({ commit, state }) {
       if (!state.selectedBoardId) {
@@ -369,7 +374,9 @@ export default createStore({
       column.tasks.push(task);
     },
     TOGGLE_SIDE_MENU(state) {
-      state.sideMenuOpen = !state.sideMenuOpen;
+      if (state.mobile) {
+        state.sideMenuOpen = !state.sideMenuOpen;
+      }
     },
     SET_SELECTED_BOARD_ID(state, boardId) {
       state.selectedBoardId = boardId;

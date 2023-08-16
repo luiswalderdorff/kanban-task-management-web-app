@@ -111,8 +111,8 @@ export default defineComponent({
     display: inline-block;
     position: relative;
     z-index: 1;
-    padding: 2em;
-    margin: -2em;
+    padding: 1em;
+    margin: -1em;
   }
 
   .dark-mode & {

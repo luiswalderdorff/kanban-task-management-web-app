@@ -5,7 +5,7 @@
       :disabled="board.columns.length === 0"
       @click="modalOpen = true"
     >
-      +
+      + <template v-if="!$store.state.mobile">Add New Task</template>
     </button>
     <ModalComponent :content="modalOpen">
       <div class="new-task__header">
@@ -60,6 +60,9 @@ export default defineComponent({
 <style lang="scss">
 .new-task {
   margin-right: 16px;
+  @media only screen and (min-width: 768px) {
+    margin-right: 24px;
+  }
   &__header {
     display: flex;
     justify-content: space-between;
@@ -72,6 +75,13 @@ export default defineComponent({
     font-size: 23px;
     height: 32px;
     width: 48px;
+
+    @media only screen and (min-width: 768px) {
+      font-size: 15px;
+      width: auto;
+      height: auto;
+      padding: 15px 24px;
+    }
 
     &:disabled {
       opacity: 0.25;

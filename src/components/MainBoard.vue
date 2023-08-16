@@ -4,10 +4,13 @@
     <template v-else-if="!board.columns.length">
       <div class="main-board__empty">
         <div>
-          <h2 class="heading-large">
+          <h2 class="heading-large empty-message">
             This board is empty. Create a new column to get started.
           </h2>
-          <button class="button button--primary" @click="boardModalOpen = true">
+          <button
+            class="button button--primary empty-button"
+            @click="boardModalOpen = true"
+          >
             + Add New Column
           </button>
         </div>
@@ -201,6 +204,7 @@ export default defineComponent({
 
   &__title {
     margin: 8px 0 24px;
+    color: var(--medium-grey) !important;
   }
 
   &__empty {
@@ -239,5 +243,9 @@ export default defineComponent({
     color: var(--medium-grey);
     margin: 24px 0;
   }
+}
+
+.empty-button {
+  max-width: 174px;
 }
 </style>

@@ -84,7 +84,6 @@ export default defineComponent({
   props: {
     board: {
       type: Object,
-      required: true,
     },
     edit: {
       type: Boolean,
@@ -148,7 +147,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scopred>
+<style lang="scss" scoped>
 .board-button {
   margin-bottom: 16px;
 }
