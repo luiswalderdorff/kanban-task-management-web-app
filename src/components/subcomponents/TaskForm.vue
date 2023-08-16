@@ -2,21 +2,35 @@
   <div>
     <div class="modal__section">
       <label for="task-title" class="modal-subheading">Title</label>
-      <input
-        class="input-component"
-        v-model="newTask.title"
-        id="task-title"
-        placeholder="e.g. Take coffee break"
-      />
+      <div class="input-component">
+        <input
+          class="input-component__input"
+          :class="{ 'input-error': !valid && !newTask.title }"
+          v-model="newTask.title"
+          id="task-title"
+          placeholder="e.g. Take coffee break"
+        />
+        <span v-if="!valid && !newTask.title" class="error-text body-large"
+          >Can't be empty</span
+        >
+      </div>
     </div>
 
     <div class="modal__section">
       <label for="task-description" class="modal-subheading">Description</label>
-      <textarea
-        class="input-component"
-        v-model="newTask.description"
-        placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
-      ></textarea>
+      <div class="input-component">
+        <textarea
+          class="input-component__input"
+          v-model="newTask.description"
+          :class="{ 'input-error': !valid && !newTask.description }"
+          placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
+        ></textarea>
+        <span
+          v-if="!valid && !newTask.description"
+          class="error-text body-large"
+          >Can't be empty</span
+        >
+      </div>
     </div>
 
     <div class="modal__section">
@@ -27,11 +41,18 @@
         class="list-editable"
       >
         <div class="list-editable__item">
-          <input
-            class="list-editable__input"
-            v-model="subtask.name"
-            placeholder="Subtask Name"
-          />
+          <div class="input-component">
+            <input
+              class="list-editable__input"
+              v-model="subtask.name"
+              :class="{ 'input-error': !valid && !subtask.name }"
+              placeholder="Subtask Name"
+            />
+            <span v-if="!valid && !subtask.name" class="error-text body-large"
+              >Can't be empty</span
+            >
+          </div>
+
           <button class="list-editable__remove" @click="removeSubtask(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -111,6 +132,7 @@ export default defineComponent({
         subtasks: [{ name: "" }],
         columnId: null,
       },
+      valid: true,
     };
   },
   created() {
@@ -129,6 +151,8 @@ export default defineComponent({
       this.newTask.subtasks.splice(index, 1);
     },
     async saveTask() {
+      this.validateForm();
+      if (!this.valid) return;
       await this.$store.dispatch("saveTask", this.newTask);
       if (!this.newTask.id) {
         this.newTask = {
@@ -139,6 +163,12 @@ export default defineComponent({
         };
       }
       this.$emit("close-event");
+    },
+    validateForm() {
+      this.valid =
+        this.newTask.title &&
+        this.newTask.description &&
+        this.newTask.subtasks.every((subtask) => subtask.name);
     },
   },
 });

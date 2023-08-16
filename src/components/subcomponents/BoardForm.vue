@@ -2,12 +2,18 @@
   <div>
     <div class="modal__section">
       <label for="task-title" class="modal-subheading">Board Name</label>
-      <input
-        class="input-component"
-        v-model="newBoard.name"
-        id="task-title"
-        placeholder="e.g. Take coffee break"
-      />
+      <div class="input-component">
+        <input
+          class="input-component__input"
+          :class="{ 'input-error': !valid && !newBoard.name }"
+          v-model="newBoard.name"
+          id="task-title"
+          placeholder="e.g. Take coffee break"
+        />
+        <span v-if="!valid && !newBoard.name" class="error-text body-large"
+          >Can't be empty</span
+        >
+      </div>
     </div>
 
     <div class="modal__section">
@@ -18,11 +24,17 @@
         class="list-editable"
       >
         <div class="list-editable__item">
-          <input
-            class="list-editable__input"
-            v-model="column.name"
-            placeholder="Column Name"
-          />
+          <div class="input-component">
+            <input
+              class="list-editable__input"
+              :class="{ 'input-error': !valid && !column.name }"
+              v-model="column.name"
+              placeholder="Column Name"
+            />
+            <span v-if="!valid && !column.name" class="error-text body-large"
+              >Can't be empty</span
+            >
+          </div>
           <button class="list-editable__remove" @click="removeColumn(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,6 +98,7 @@ export default defineComponent({
         id: null,
         columns: [{ name: "", id: uuidv4(), tasks: [] }],
       },
+      valid: true,
     };
   },
   created() {
@@ -95,6 +108,11 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(["addTask"]),
+    validateForm() {
+      this.valid =
+        this.newBoard.name &&
+        this.newBoard.columns.every((column) => column.name);
+    },
     addColumn() {
       this.newBoard.columns.push({ name: "", id: uuidv4(), tasks: [] });
     },
@@ -115,6 +133,9 @@ export default defineComponent({
       this.$emit("close-event");
     },
     async saveBoard() {
+      this.validateForm();
+      if (!this.valid) return;
+
       await this.$store.dispatch("saveBoard", this.newBoard);
       this.newBoard = {
         name: "",

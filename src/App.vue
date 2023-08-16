@@ -11,7 +11,6 @@
 
 <script lang="ts">
 /* TODOS
-Check when creating something when some fields arent filled out. Make fields required
 Make style responsive
 
 TODOS End
@@ -293,33 +292,37 @@ input[type="reset"] {
 }
 
 .input-component {
-  @extend .body-large;
-  display: block;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid rgba(130, 143, 163, 0.25);
-  background: var(--white);
-  padding: 8px 16px;
-  color: var(--black);
-  box-sizing: border-box;
-  margin-bottom: 12px;
-
-  &::placeholder {
+  flex-grow: 1;
+  position: relative;
+  &__input {
+    @extend .body-large;
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    background: var(--white);
+    padding: 8px 16px;
     color: var(--black);
-    opacity: 0.25;
-  }
-
-  &:focus {
-    outline: none !important;
-    border: 2px solid var(--main-purple-hover);
-  }
-
-  .dark-mode & {
-    background: var(--dark-grey);
-    color: var(--white);
+    box-sizing: border-box;
+    margin-bottom: 12px;
 
     &::placeholder {
+      color: var(--black);
+      opacity: 0.25;
+    }
+
+    &:focus {
+      outline: none !important;
+      border: 2px solid var(--main-purple-hover);
+    }
+
+    .dark-mode & {
+      background: var(--dark-grey);
       color: var(--white);
+
+      &::placeholder {
+        color: var(--white);
+      }
     }
   }
 }
@@ -342,9 +345,8 @@ input[type="reset"] {
     margin-bottom: 12px;
   }
   &__input {
-    @extend .input-component;
-    width: auto;
-    flex-grow: 1;
+    @extend .input-component__input;
+    width: 100%;
     margin-bottom: 0;
   }
 
@@ -352,7 +354,28 @@ input[type="reset"] {
     margin-left: 16px;
     height: 15px;
     width: 15px;
+
+    &:hover {
+      rect {
+        transition: fill 0.2s;
+        fill: var(--red);
+      }
+    }
   }
+}
+
+.input-error {
+  border: 1px solid var(--red);
+}
+
+.error-text {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  transform: translateY(-50%);
+  color: var(--red);
+  background-color: var(--white);
+  padding-left: 5px;
 }
 
 .button {
