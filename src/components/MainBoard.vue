@@ -121,12 +121,13 @@ import OptionsComponent from "./subcomponents/OptionsComponent.vue";
 import TaskForm from "./subcomponents/TaskForm.vue";
 import DeleteComponent from "./subcomponents/DeleteComponent.vue";
 import BoardModal from "./subcomponents/BoardModal.vue";
+import { Task, Column } from "@/types";
 
 export default defineComponent({
   props: ["board"],
   data() {
     return {
-      selectedTask: null as any,
+      selectedTask: null as Task | null,
       editTask: false,
       deleteTask: false,
       drag: false,
@@ -144,21 +145,20 @@ export default defineComponent({
     BoardModal,
   },
   methods: {
-    showTask(task: any, columnId: string) {
+    showTask(task: Task, columnId: string) {
       this.selectedTask = { ...task, columnId: columnId };
     },
     moveTaskToColumn(oldColumnId: string, newColumnId: string) {
       const oldColumn = this.board.columns.find(
-        (column: any) => column.id === oldColumnId
+        (column: Column) => column.id === oldColumnId
       );
 
       oldColumn.tasks = oldColumn.tasks.filter(
-        (t: any) => t.id !== this.selectedTask.id
+        (t: Task) => t.id !== this.selectedTask?.id
       );
-      console.log(oldColumn);
 
       const newColumn = this.board.columns.find(
-        (column: any) => column.id === newColumnId
+        (column: Column) => column.id === newColumnId
       );
 
       newColumn.tasks.push(this.selectedTask);
@@ -179,12 +179,6 @@ export default defineComponent({
       ) {
         this.moveTaskToColumn(oldColumnId, newColumnId);
       }
-    },
-    board: {
-      deep: true,
-      handler() {
-        console.log(123);
-      },
     },
   },
 });

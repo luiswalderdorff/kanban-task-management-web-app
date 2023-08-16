@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import { localStoragePlugin } from "./services/localStoragePlugin";
 import { v4 as uuidv4 } from "uuid";
+import { Task, Column, Board } from "./types";
 
 const savedState = localStorage.getItem("state");
 
@@ -265,7 +266,7 @@ export default createStore({
               },
             ],
           },
-        ] as any[],
+        ] as Board[],
         // TODO: Add first board naturally
         selectedBoardId: null,
         sideMenuOpen: false,
@@ -280,7 +281,7 @@ export default createStore({
       } else {
         // Edit existing board
         const boardIndex = state.boards.findIndex(
-          (b: any) => b.id === board.id
+          (b: Board) => b.id === board.id
         );
         if (boardIndex !== -1) {
           commit("EDIT_BOARD", { boardIndex, board });
@@ -292,17 +293,17 @@ export default createStore({
       commit("SELECT_BOARD", board.id);
     },
     async saveTask({ state, commit }, task) {
-      const board = state.boards.find((board: any) =>
-        board.columns.some((column: any) => column.id === task.columnId)
+      const board = state.boards.find((board: Board) =>
+        board.columns.some((column: Column) => column.id === task.columnId)
       );
       if (board) {
         const column = board.columns.find(
-          (column: any) => column.id === task.columnId
+          (column: Column) => column.id === task.columnId
         );
         if (task.id) {
           // Edit existing task
-          const taskIndex = column.tasks.findIndex(
-            (existingTask: any) => existingTask.id === task.id
+          const taskIndex = column?.tasks.findIndex(
+            (existingTask: Task) => existingTask.id === task.id
           );
           commit("EDIT_TASK", { column, taskIndex, task });
         } else {
@@ -313,17 +314,17 @@ export default createStore({
       }
     },
     deleteTask({ commit, state }, task) {
-      const board = state.boards.find((board: any) =>
-        board.columns.some((column: any) =>
-          column.tasks.some((t: any) => t.id === task.id)
+      const board = state.boards.find((board: Board) =>
+        board.columns.some((column: Column) =>
+          column.tasks.some((t: Task) => t.id === task.id)
         )
       );
       if (board) {
-        const column = board.columns.find((column: any) =>
-          column.tasks.some((t: any) => t.id === task.id)
+        const column = board.columns.find((column: Column) =>
+          column.tasks.some((t: Task) => t.id === task.id)
         );
-        const taskIndex = column.tasks.findIndex(
-          (existingTask: any) => existingTask.id === task.id
+        const taskIndex = column?.tasks.findIndex(
+          (existingTask: Task) => existingTask.id === task.id
         );
         commit("DELETE_TASK", { column, taskIndex });
       }
@@ -339,14 +340,14 @@ export default createStore({
       }
     },
     // TODO: Objekt at the moment is referenced directly and changed. In the future, create deep copy, change it manually through mutations
-    updateSubtask({ commit }, payload) {
+    /*updateSubtask({ commit }, payload) {
       //commit("UPDATE_SUBTASK", payload);
-    },
+    },*/
     toggleDarkMode({ commit }) {
       commit("TOGGLE_DARK_MODE");
     },
     deleteBoard({ commit, state }, boardId) {
-      const board = state.boards.find((board: any) => board.id === boardId);
+      const board = state.boards.find((board: Board) => board.id === boardId);
       if (board) {
         commit("DELETE_BOARD", { board });
       }
@@ -374,20 +375,21 @@ export default createStore({
     SET_SELECTED_BOARD_ID(state, boardId) {
       state.selectedBoardId = boardId;
     },
-    UPDATE_SUBTASK(
+    /*UPDATE_SUBTASK(
       state,
       { boardId, columnId, taskId, subtaskIndex, checked }
     ) {
-      /*const board = state.boards.find((board: any) => board.id === boardId);
+      const board = state.boards.find((board: Board) => board.id === boardId);
       const column = board.columns.find(
-        (column: any) => column.id === columnId
+        (column: Column) => column.id === columnId
       );
-      const task = column.tasks.find((task: any) => task.id === taskId);
+      const task = column.tasks.find((task: Task) => task.id === taskId);
       const subtask = task.subtasks[subtaskIndex];
-      subtask.checked = checked;*/
-    },
+      subtask.checked = checked;
+    },*/
     MOVE_TASK(state, event) {
       console.log(state);
+      console.log(event);
 
       // Update the state based on the event
       // You can access the old and new indices of the moved task from event.oldIndex and event.newIndex
@@ -403,7 +405,9 @@ export default createStore({
       state.darkMode = !state.darkMode;
     },
     DELETE_BOARD(state, { board }) {
-      const boardIndex = state.boards.findIndex((b: any) => b.id === board.id);
+      const boardIndex = state.boards.findIndex(
+        (b: Board) => b.id === board.id
+      );
       state.boards.splice(boardIndex, 1);
 
       // If the deleted board was the selected board, select the next available board

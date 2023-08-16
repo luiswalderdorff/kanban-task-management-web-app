@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts">
+import { Subtask } from "@/types";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -47,12 +48,12 @@ export default defineComponent({
   computed: {
     subtasksChecked() {
       return this.selectedTask.subtasks.filter(
-        (subtask: any) => subtask.checked
+        (subtask: Subtask) => subtask.checked
       ).length;
     },
   },
   methods: {
-    updateSubtaskChecked(subtaskIndex: any, checked: boolean) {
+    updateSubtaskChecked(subtaskIndex: number, checked: boolean) {
       this.$store.dispatch("updateSubtask", {
         boardId: this.board.id,
         columnId: this.selectedTask.columnId,

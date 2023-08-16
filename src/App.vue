@@ -29,6 +29,7 @@ import MainBoard from "./components/MainBoard.vue";
 import TitleMenu from "./components/TitleMenu.vue";
 import { mapActions } from "vuex";
 import { EventBus } from "./services/EventBus";
+import { Board } from "./types";
 
 export default defineComponent({
   name: "App",
@@ -40,14 +41,14 @@ export default defineComponent({
   data() {
     return {
       isDarkened: false,
-      selectedBoard: null as any,
+      selectedBoard: null as Board | null,
     };
   },
   computed: {
     sideMenuOpen(): boolean {
       return this.$store.state.sideMenuOpen;
     },
-    boards(): any {
+    boards(): Board[] {
       return this.$store.state.boards;
     },
     selectedBoardId(): string {
@@ -76,7 +77,7 @@ export default defineComponent({
     ...mapActions(["initializeSelectedBoard"]),
     getBoardData() {
       this.selectedBoard = this.$store.state.boards.find(
-        (board: any) => board.id === this.$store.state.selectedBoardId
+        (board: Board) => board.id === this.$store.state.selectedBoardId
       );
     },
   },
