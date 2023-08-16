@@ -27,7 +27,6 @@
           fill="#635FC7"
         />
       </svg>
-      <!-- TODO: If is for when no board is there. Build alternative for when no board is there -->
       <div class="title-menu__open-side-menu" @click="toggleSideMenu">
         <h2 class="heading-large title-menu__title">
           <template v-if="board">{{ board.name }}</template>
@@ -127,7 +126,6 @@ export default defineComponent({
 
   &__open-icon {
     margin-left: 8px;
-    // TODO: Check time
     transition: transform 0.4s;
     &--opened {
       transform: rotate(180deg);

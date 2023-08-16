@@ -267,7 +267,6 @@ export default createStore({
             ],
           },
         ] as Board[],
-        // TODO: Add first board naturally
         selectedBoardId: null,
         sideMenuOpen: false,
         darkMode: false,

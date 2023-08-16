@@ -225,7 +225,6 @@ export default {
   border-radius: 5px;
   /* The slider. Taken and adapted from here: https://www.w3schools.com/howto/howto_css_switch.asp */
   /* Toggle Checkbox */ /* The switch - the box around the slider */
-  // TODO: Double check slide, that everything looks good
   &__sun {
     padding-right: 20px;
   }

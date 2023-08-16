@@ -19,7 +19,6 @@
       ></textarea>
     </div>
 
-    <!-- TODO: Create  for tasks and board -->
     <div class="modal__section">
       <h3 class="modal-subheading">Subtasks</h3>
       <div

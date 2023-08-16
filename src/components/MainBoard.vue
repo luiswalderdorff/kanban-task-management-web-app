@@ -44,7 +44,6 @@
       </div>
     </template>
 
-    <!-- TODO: Create component -->
     <ModalComponent class="task-modal" :content="selectedTask">
       <div class="task-modal__header" v-if="!deleteTask">
         <h2 class="heading-large task-modal__title">

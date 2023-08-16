@@ -21,6 +21,7 @@ remove console.logs
 Check warnings
 Remove any anys
 Test on mobile
+Remove test data
 */
 import { defineComponent } from "vue";
 import SideMenu from "./components/SideMenu.vue";
