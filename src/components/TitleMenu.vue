@@ -28,13 +28,10 @@
         />
       </svg>
       <!-- TODO: If is for when no board is there. Build alternative for when no board is there -->
-      <div
-        class="title-menu__open-side-menu"
-        @click="toggleSideMenu"
-        v-if="board"
-      >
+      <div class="title-menu__open-side-menu" @click="toggleSideMenu">
         <h2 class="heading-large title-menu__title">
-          {{ board.name }}
+          <template v-if="board">{{ board.name }}</template>
+          <template v-else>Create a Board</template>
         </h2>
         <svg
           class="title-menu__open-icon"

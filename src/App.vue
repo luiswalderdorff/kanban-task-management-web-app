@@ -5,13 +5,12 @@
   >
     <SideMenu v-if="sideMenuOpen" :selectedBoard="selectedBoard" />
     <TitleMenu :board="selectedBoard" />
-    <MainBoard v-if="selectedBoard" :board="selectedBoard" />
+    <MainBoard :board="selectedBoard" />
   </div>
 </template>
 
 <script lang="ts">
 /* TODOS
-Create empty no board state
 Check when creating something when some fields arent filled out. Make fields required
 Make style responsive
 

@@ -1,6 +1,7 @@
 <template>
-  <div class="main-board" v-if="board">
-    <template v-if="!board.columns.length">
+  <div class="main-board">
+    <template v-if="!board"></template>
+    <template v-else-if="!board.columns.length">
       <div class="main-board__empty">
         <div>
           <h2 class="heading-large">
