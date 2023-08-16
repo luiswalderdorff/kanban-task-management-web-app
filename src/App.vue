@@ -133,10 +133,15 @@ export default defineComponent({
   src: url("./assets/fonts/PlusJakartaSans-Bold.ttf") format("truetype");
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
   color: var(--black, #000112);
   margin: 0;
+  overflow: hidden;
 }
 
 .heading-xl {

@@ -1,6 +1,23 @@
 <template>
   <div class="main-board" v-if="board">
-    <template v-if="board.columns.length">
+    <template v-if="!board.columns.length">
+      <div class="main-board__empty">
+        <div>
+          <h2 class="heading-large">
+            This board is empty. Create a new column to get started.
+          </h2>
+          <button class="button button--primary" @click="boardModalOpen = true">
+            + Add New Column
+          </button>
+        </div>
+      </div>
+      <BoardModal
+        :board="board"
+        :modalOpen="boardModalOpen"
+        @close-event="boardModalOpen = false"
+      />
+    </template>
+    <template v-else>
       <div
         class="main-board__column"
         v-for="(column, index) in board.columns"
@@ -23,16 +40,6 @@
             <BoardTask :task="element" @click="showTask(element, column.id)" />
           </template>
         </draggable>
-      </div>
-    </template>
-    <template v-else>
-      <div class="main-board__empty">
-        <div>
-          <h2 class="heading-large">
-            This board is empty. Create a new column to get started.
-          </h2>
-          <button class="button button--primary">+ Add New Collumn</button>
-        </div>
       </div>
     </template>
 
@@ -113,21 +120,17 @@ import CheckboxComponent from "./subcomponents/CheckboxComponent.vue";
 import OptionsComponent from "./subcomponents/OptionsComponent.vue";
 import TaskForm from "./subcomponents/TaskForm.vue";
 import DeleteComponent from "./subcomponents/DeleteComponent.vue";
+import BoardModal from "./subcomponents/BoardModal.vue";
 
 export default defineComponent({
   props: ["board"],
   data() {
     return {
-      newTask: {
-        title: "",
-        description: "",
-        subtasks: [{ name: "" }],
-        columnIndex: null,
-      },
       selectedTask: null as any,
       editTask: false,
       deleteTask: false,
       drag: false,
+      boardModalOpen: false,
     };
   },
   components: {
@@ -138,6 +141,7 @@ export default defineComponent({
     OptionsComponent,
     TaskForm,
     DeleteComponent,
+    BoardModal,
   },
   methods: {
     showTask(task: any, columnId: string) {

@@ -345,6 +345,12 @@ export default createStore({
     toggleDarkMode({ commit }) {
       commit("TOGGLE_DARK_MODE");
     },
+    deleteBoard({ commit, state }, boardId) {
+      const board = state.boards.find((board: any) => board.id === boardId);
+      if (board) {
+        commit("DELETE_BOARD", { board });
+      }
+    },
   },
   mutations: {
     ADD_BOARD(state, board) {
@@ -395,6 +401,22 @@ export default createStore({
     },
     TOGGLE_DARK_MODE(state) {
       state.darkMode = !state.darkMode;
+    },
+    DELETE_BOARD(state, { board }) {
+      const boardIndex = state.boards.findIndex((b: any) => b.id === board.id);
+      state.boards.splice(boardIndex, 1);
+
+      // If the deleted board was the selected board, select the next available board
+      if (state.selectedBoardId === board.id) {
+        if (state.boards.length > 0) {
+          // If there are still boards left, select the next one (or the first one if the deleted board was the last one)
+          state.selectedBoardId =
+            state.boards[Math.min(boardIndex, state.boards.length - 1)].id;
+        } else {
+          // If there are no boards left, set selectedBoardId to null
+          state.selectedBoardId = null;
+        }
+      }
     },
   },
   plugins: [localStoragePlugin],

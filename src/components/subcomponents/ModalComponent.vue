@@ -19,10 +19,8 @@ export default defineComponent({
       }
     },
   },
-  methods: {
-    closeModal() {
-      EventBus.emit("modal-close");
-    },
+  beforeUnmount() {
+    EventBus.emit("modal-close");
   },
 });
 </script>

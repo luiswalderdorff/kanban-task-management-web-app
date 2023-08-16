@@ -60,26 +60,16 @@
         "
       />
     </div>
-    <modal-component :content="modalOpen">
-      <delete-component
-        v-if="deleteBoard"
-        @cancel-delete-event="
-          deleteBoard = false;
-          modalOpen = false;
-        "
-        @delete-confirmation-event="deleteBoardFunction()"
-        type="board"
-        :title="board.name"
-      />
-      <template v-else>
-        <h2 class="heading-large">Edit Board</h2>
-        <board-form
-          :board="board"
-          :edit="true"
-          @close-event="modalOpen = false"
-        />
-      </template>
-    </modal-component>
+    <BoardModal
+      :board="board"
+      :modalOpen="modalOpen"
+      :deleteBoard="deleteBoard"
+      @cancel-delete-event="
+        deleteBoard = false;
+        modalOpen = false;
+      "
+      @close-event="modalOpen = false"
+    />
   </div>
 </template>
 
@@ -88,9 +78,7 @@ import { defineComponent } from "vue";
 import NewTask from "./NewTask.vue";
 import { mapActions } from "vuex";
 import OptionsComponent from "./subcomponents/OptionsComponent.vue";
-import BoardForm from "./subcomponents/BoardForm.vue";
-import ModalComponent from "./subcomponents/ModalComponent.vue";
-import DeleteComponent from "./subcomponents/DeleteComponent.vue";
+import BoardModal from "./subcomponents/BoardModal.vue";
 
 export default defineComponent({
   data() {
@@ -110,14 +98,12 @@ export default defineComponent({
   components: {
     NewTask,
     OptionsComponent,
-    BoardForm,
-    ModalComponent,
-    DeleteComponent,
+    BoardModal,
   },
   methods: {
     ...mapActions(["toggleSideMenu"]),
     deleteBoardFunction() {
-      console.log("123");
+      this.$store.dispatch("deleteBoard", this.board.id);
     },
   },
 });
